@@ -1,0 +1,164 @@
+/*
+=================================
+         CGU
+================================
+*/
+
+.cgu-container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--beige_fonce);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.cgu-container h1 {
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--bleu_clair);
+    margin-bottom: 20px;
+}
+
+.cgu-container section {
+    margin-bottom: 20px;
+}
+
+.cgu-container h2 {
+    font-size: 1.8em;
+    color: var(--bleu_fonce);
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--bleu_fonce);
+    padding-bottom: 5px;
+}
+
+.cgu-container p {
+    font-size: 1em;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: var(--bleu_fonce_ecriture);
+}
+
+.cgu-container ul {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+.cgu-container ul li {
+    margin-bottom: 10px;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .cgu-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .cgu-container h1 {
+        font-size: 2em;
+    }
+
+    .cgu-container h2 {
+        font-size: 1.5em;
+    }
+
+    .cgu-container p {
+        font-size: 0.9em;
+    }
+}
+
+/*=========================
+Shared link
+===========================*/
+
+.btn-share {
+            background: #9b59b6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn-share:hover {
+            background: #8e44ad;
+        }
+        
+        /* Modal de partage */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .share-modal.active {
+            display: flex;
+        }
+        .share-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+        .share-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+        .share-modal-close:hover {
+            color: #333;
+        }
+        .share-url-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .share-url-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--bleu_clair);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .copy-btn {
+            padding: 12px 20px;
+            background: var(--bleu_clair);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .copy-btn:hover {
+            background: var(--vert_btn);
+        }
+        .copy-success {
+            display: none;
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .share-info {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
