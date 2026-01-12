@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/modules/init.php';
+require_once __DIR__ . '/include/init.php';
 $userId = $_SESSION['utilisateur']['id'] ?? null;
 ?>
 
@@ -19,9 +19,9 @@ $userId = $_SESSION['utilisateur']['id'] ?? null;
         echo "<script>const currentUserId = null;</script>";
     }
     ?>
-
-    <link rel="stylesheet" href="css/style.css"> 
     <link rel="stylesheet" href="css/index.css"> 
+    <link rel="stylesheet" href="css/style.css"> 
+    
 
 
 </head>

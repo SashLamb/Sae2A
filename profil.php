@@ -1,12 +1,11 @@
 <?php
-require_once __DIR__ . '/modules/init.php';
+require_once __DIR__ . '/include/init.php';
 
 
 if (!isset($_SESSION['utilisateur'])) {
     header("Location: id.php");
     exit;
 }
-
 
 $user = $_SESSION['utilisateur'];
 ?>
@@ -38,6 +37,7 @@ $user = $_SESSION['utilisateur'];
             <ul>
                 <li><a href="mesRoadTrips.php">Mes Road-Trips</a></li>
                 <li><a href="profil.php" class="active">Paramètres du compte</a></li>
+                <li><a href="accessibilite.php" class="access">Accessibilité</a></li>
                 <li><a href="/logout.php" class="logout">Déconnexion</a></li>
             </ul>
         </nav>
