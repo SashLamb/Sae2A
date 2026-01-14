@@ -64,11 +64,6 @@ $stmt->execute([$id_roadtrip]);
 $roadTrip = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$roadTrip) { echo "Road trip introuvable."; exit; }
 
-// Vérification droits (si besoin, ici on affiche même si public, mais vuRoadTrip est souvent pour le créateur)
-// Si vous voulez restreindre vuRoadTrip au seul créateur :
-// if ($roadTrip['id_utilisateur'] != $id_utilisateur) { header("Location: Roadtrip.php?id=$id_roadtrip"); exit; }
-
-// Récupération Trajets
 $stmt = $pdo->prepare("SELECT * FROM trajet WHERE road_trip_id = ? ORDER BY numero");
 $stmt->execute([$id_roadtrip]);
 $trajets = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -177,11 +172,6 @@ function getTransportIcon($type) {
         
         <p><?php echo nl2br($roadTrip['description']); ?></p>
 
-        <?php if($roadTrip['id_utilisateur'] == $id_utilisateur): ?>
-        <div class="actions-header">
-            <a href="creationRoadTrip.php?id=<?php echo $roadTrip['id']; ?>" class="btn-modifier">✏️ Modifier ce Road Trip</a>
-        </div>
-        <?php endif; ?>
     </div>
 
     <h2>Vue d'ensemble du Road Trip 🌍</h2>
@@ -310,7 +300,9 @@ function getTransportIcon($type) {
                         ?>
                     <?php endfor; ?>
                 </div> 
-                <div id="map-trajet-<?php echo $t['id']; ?>" class="map-trajet"></div>
+                <div class = "map-container-vu"> 
+                    <div id="map-trajet-<?php echo $t['id']; ?>" class="map-trajet"></div>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>    
