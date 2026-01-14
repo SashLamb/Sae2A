@@ -8,7 +8,6 @@
     font-size: 1.2rem;
 }
 
-/* --- Sidebar --- */
 .profil-sidebar {
     background: var(--beige_fonce);
     padding : 20px;
@@ -71,7 +70,6 @@
     color: var(--white);
 }
 
-/* --- Contenu Principal  --- */
 .profil-content {
     background-color: var(--beige_fonce);
     padding: 40px;
@@ -90,10 +88,6 @@
     margin-bottom: 30px;
 }
 
-/* ==========================================
-   PAGE ACCESSIBILITÉ - STYLE GLOBAL
-   ========================================== */
-
 .cont_access {
     display: flex;
     justify-content: center;
@@ -101,7 +95,6 @@
     min-height: 80vh;
     padding: 20px;
 }
-
 
 .AccessForm {
     background-color: var(--beige_fonce);
@@ -140,10 +133,6 @@
     color: var(--bleu_fonce_ecriture);
     cursor: pointer;
 }
-
-/* ==========================================
-   STYLE DES SLIDERS (SWITCH)
-   ========================================== */
 
 .switch {
     position: relative;
@@ -198,10 +187,6 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* ==========================================
-   OPTIONS DU MODE DALTONIEN
-   ========================================= */
-
 .daltonism-container {
     margin-top: 10px;
     padding: 15px;
@@ -234,12 +219,6 @@ input:checked + .slider:before {
     width: 18px;
     height: 18px;
 }
-
-
-
-/* ==============================
-              Favoris
-============================== */
 
  .btn-favori {
             background: var(--orange_sombre);

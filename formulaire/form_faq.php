@@ -1,29 +1,5 @@
 <?php
 
-/*
-installation : (su)
-sudo apt update
-sudo apt install -y golang
-
-# installe la dernière version dans $GOBIN ou $HOME/go/bin
-go install github.com/mailhog/MailHog@latest
-
-# binaire installé typiquement dans ~/go/bin/MailHog ou $GOBIN
-# pour rendre la commande accessible system-wide :
-sudo mv ~/go/bin/MailHog /usr/local/bin/mailhog
-sudo chmod +x /usr/local/bin/mailhog
-
-# vérification
-which mailhog
-mailhog --help
-
-# utilisation : 
-en su : mailhog 
-sur firefox : http://localhost:8025
-*/
-
-
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -80,7 +56,6 @@ try {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-  
     $mail->setFrom('tripsandroad@gmail.com', 'Trips & Roads - FAQ');
     $mail->addAddress('tripsandroad@gmail.com');
     $mail->addReplyTo($email, $nom);

@@ -68,14 +68,14 @@ if (isset($_GET['id'])) {
   <head>
     <meta charset="utf-8">
     <title><?php echo $modeEdition ? "Modifier le RoadTrip" : "Création de RoadTrip"; ?></title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https:
+    <script src="https:
     <link rel="stylesheet" href="/css/style.css">
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https:
     <script src="/js/tinymce/tinymce.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https:
+    <script src="https:
 
     <script>
         const USER_DEFAULT_CITY = "<?php echo htmlspecialchars($defaultCity); ?>";
@@ -129,7 +129,7 @@ if (isset($_GET['id'])) {
             <option value="amis" <?php echo ($modeEdition && $roadTripData['visibilite'] == 'amis') ? 'selected' : ''; ?>>👥 Amis</option>
             <option value="public" <?php echo ($modeEdition && $roadTripData['visibilite'] == 'public') ? 'selected' : ''; ?>>🌍 Public (Tout le monde)</option>
           </select>
-          <small style="display:block; margin-bottom:10px; color:#666;">
+          <small style="display:block; margin-bottom:10px; color:
             * Vous pouvez partager un brouillon en mode "Amis" ou "Public".
           </small>
 

@@ -79,17 +79,17 @@ include_once __DIR__ . "/../modules/header.php";
             <h2>5. Comment gérer vos préférences ?</h2>
             <p>La plupart des navigateurs acceptent les cookies par défaut. Vous pouvez toutefois configurer votre navigateur pour refuser les cookies ou supprimer ceux déjà installés. Voici comment faire selon votre navigateur :</p>
             <ul>
-                <li><a href="https://support.google.com/chrome/answer/95647?hl=fr" target="_blank">Google Chrome</a></li>
-                <li><a href="https://support.mozilla.org/fr/kb/protection-renforcee-contre-pistage-firefox-ordinateur" target="_blank">Mozilla Firefox</a></li>
-                <li><a href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac" target="_blank">Safari</a></li>
-                <li><a href="https://support.microsoft.com/fr-fr/microsoft-edge/supprimer-les-cookies-dans-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank">Microsoft Edge</a></li>
+                <li><a href="https:
+                <li><a href="https:
+                <li><a href="https:
+                <li><a href="https:
             </ul>
             <p><em>Attention : Le refus des cookies techniques (comme PHPSESSID) vous empêchera de vous connecter à votre compte Membre.</em></p>
         </section>
 
         <section>
             <h2>6. Contact</h2>
-            <p>Pour toute question relative à notre utilisation des cookies, vous pouvez nous contacter via notre <a href="contact.php" style="color:#BF092F;">formulaire de contact</a> ou consulter notre <a href="politique.php" style="color:#BF092F;">Politique de Confidentialité</a>.</p>
+            <p>Pour toute question relative à notre utilisation des cookies, vous pouvez nous contacter via notre <a href="contact.php" style="color:
         </section>
     </div>
 </main>

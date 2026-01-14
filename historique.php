@@ -1,10 +1,8 @@
 <?php
-// Code/historique.php
 
 require_once __DIR__ . '/include/init.php';
 include_once __DIR__ . '/bd/lec_bd.php';
 
-// Redirection si pas connecté
 if (!isset($_SESSION['utilisateur']['id'])) {
     header('Location: /id.php');
     exit;
@@ -12,7 +10,6 @@ if (!isset($_SESSION['utilisateur']['id'])) {
 
 $id_utilisateur = $_SESSION['utilisateur']['id'];
 
-// --- ACTION : SUPPRIMER L'HISTORIQUE ---
 if (isset($_GET['action']) && $_GET['action'] === 'clear') {
     $stmt = $pdo->prepare("DELETE FROM historique WHERE id_utilisateur = :uid");
     $stmt->execute(['uid' => $id_utilisateur]);
@@ -20,8 +17,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'clear') {
     exit;
 }
 
-// --- RÉCUPÉRATION DES DONNÉES ---
-// On joint historique -> roadtrip -> utilisateurs (pour avoir le nom du créateur)
 $stmt = $pdo->prepare("
     SELECT h.date_visite, r.*, u.nom, u.prenom 
     FROM historique h
@@ -43,7 +38,7 @@ $historique = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Mon Historique - Trips & Roads</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/accessibilite.css">
-    <script src="https://kit.fontawesome.com/d76759a8b0.js" crossorigin="anonymous"></script>
+    <script src="https:
     <style>
         .header-tools {
             display: flex;
@@ -62,11 +57,11 @@ $historique = $stmt->fetchAll(PDO::FETCH_ASSOC);
             transition: 0.3s;
         }
         .btn-clear-history:hover {
-            background-color: #8B0000;
+            background-color: 
         }
         .date-visite {
             font-size: 0.8rem;
-            color: #666;
+            color: 
             font-style: italic;
             margin-bottom: 10px;
             display: block;
@@ -102,7 +97,7 @@ $historique = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($historique as $item): ?>
                     <div class="roadtrip-card">
                         <?php 
-                        // Gestion Image
+                        
                         $imagePath = "default_trip.jpg";
                         if (!empty($item['photo'])) $imagePath = $item['photo'];
                         elseif (!empty($item['photo_cover'])) $imagePath = $item['photo_cover'];

@@ -1,14 +1,9 @@
-/*=======================================
-  Barre de recherche
-=======================================*/
+
 let data = [];
 let userId = null;
 
-// --- CSS injecté (CORRIGÉ POUR LE BUG DU RECTANGLE ORANGE) ---
 const style = document.createElement('style');
 
-
-// --- Chargement ---
 fetch("../bd/rech_bd.php")
     .then(response => response.json())
     .then(json => {
@@ -20,7 +15,6 @@ fetch("../bd/rech_bd.php")
 
 const searchBox = document.getElementById('searchInput');
 
-// Création du tableau s'il n'existe pas
 let resultsTable = document.getElementById('results-table');
 let resultsTableBody;
 
@@ -61,7 +55,6 @@ if (searchBox && resultsTableBody) {
             const matchTitle = item.titre.toLowerCase().includes(query);
             if (!matchTitle) return false;
             
-            // Le PHP a déjà fait le tri de sécurité, on accepte tout ce qui arrive
             return true;
         });
 
@@ -78,7 +71,6 @@ if (searchBox && resultsTableBody) {
 
                 const cell = document.createElement('td');
                 
-                // TITRE + TAG
                 let html = `<span class="trip-title">${item.titre}`;
                 if (item.visibilite === 'prive') {
                     html += `<span class="tag-prive">(Privé)</span>`;
@@ -87,7 +79,6 @@ if (searchBox && resultsTableBody) {
                 }
                 html += `</span>`;
                 
-                // AUTEUR
                 if (item.pseudo) {
                     html += `<span class="trip-author">Proposé par : ${item.pseudo}</span>`;
                 }
@@ -105,7 +96,6 @@ if (searchBox && resultsTableBody) {
         }
     }
 
-    // --- ÉVÉNEMENTS ---
     window.addEventListener('resize', () => {
         if (resultsTable.style.display === 'block') positionnerTableau();
     });
@@ -130,10 +120,6 @@ if (searchBox && resultsTableBody) {
     console.error("❌ Erreur : Impossible de trouver #searchInput");
 }
 
-/*=======================================
-  Changement de theme
-=======================================*/
- 
 const savedTheme = localStorage.getItem("theme");
 const toggleSombre = document.getElementById("checkboxSombre");
  
@@ -150,7 +136,6 @@ const daltonienTypes = {
     tritanopia: 'tritanopia',
 };
 
- 
 if (savedTheme === "dark") {
     document.documentElement.classList.add("dark");
     document.documentElement.classList.add("SombreBtn");
@@ -193,7 +178,6 @@ if (toggleMalvoyant) {
     });
 }
 
-
 if (savedMode === "on") {
     document.documentElement.classList.add("daltonien");
     if (savedType) {
@@ -217,7 +201,3 @@ toggleDaltonien.addEventListener("change", () => {
         localStorage.setItem("modeDaltonien", "off");
     }
 });
-
-
-
- 

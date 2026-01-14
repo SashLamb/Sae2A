@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/include/init.php';
 
-
 if (!isset($_SESSION['utilisateur'])) {
     header("Location: id.php");
     exit;

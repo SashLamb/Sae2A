@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../bd/lec_bd.php'; 
 
-
 $required = ['pseudo','name', 'firstname', 'email', 'password', 'confirm_password', 
              'address', 'postal', 'town', 'phone', 'birthdate'];
 
@@ -23,12 +22,10 @@ $town        = trim($_POST['town']);
 $phone       = trim($_POST['phone']);
 $birthdate   = trim($_POST['birthdate']);
 
-
 if ($password !== $confirm) {
     die("<p>Les mots de passe ne correspondent pas.</p>
          <p><a href='../id.php'>Retour</a></p>");
 }
-
 
 $check = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = :email");
 $check->execute(['email' => $email]);
@@ -38,10 +35,7 @@ if ($check->fetch()) {
          <p><a href='../id.php'>Retour</a></p>");
 }
 
-
-
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
 
 $photo_profil = null; 
 $dossier_upload = __DIR__ . '/../uploads/pp/';
@@ -76,7 +70,6 @@ if (!empty($_FILES['image']['name'])) {
     }
 }
 
-
 $sql = "INSERT INTO utilisateurs 
         (pseudo, nom, prenom, email, mot_de_passe, adresse, postal, ville, tel, date_naissance, photo_profil)
         VALUES 
@@ -97,7 +90,6 @@ $stmt->execute([
     ':date_naissance' => $birthdate,
     ':photo_profil'   => $photo_profil
 ]);
-
 
 $_SESSION['utilisateur'] = [
     'pseudo'    => $pseudo,

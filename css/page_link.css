@@ -1,8 +1,3 @@
-/*
-=================================
-         CGU
-================================
-*/
 
 .cgu-container {
     width: 80%;
@@ -13,7 +8,6 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .cgu-container h1 {
     text-align: center;
@@ -50,9 +44,6 @@
     margin-bottom: 10px;
 }
 
-
-
-
 @media (max-width: 768px) {
     .cgu-container {
         width: 90%;
@@ -72,10 +63,6 @@
     }
 }
 
-/*=========================
-Shared link
-===========================*/
-
 .btn-share {
     background: #9b59b6;
     color: white;
@@ -88,7 +75,6 @@ Shared link
     background: #8e44ad;
 }
 
-/* Modal de partage */
 .share-modal {
     display: none;
     position: fixed;
@@ -163,10 +149,6 @@ Shared link
     color: #666;
 }
 
-/*==========================
-FAQ
-===========================*/
-
         .faq-category {
             margin-bottom: 40px;
         }
@@ -236,9 +218,7 @@ FAQ
             color: var(--rouge);
             text-decoration: underline;
         }
-/*============================
-Contact
-============================*/
+
 .contact-wrapper {
             max-width: 1000px;
             margin: 40px auto;

@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/footer.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link rel="stylesheet" href="https:
 </head>
 <script src="js/recherche.js"></script>  
-
 
 <footer>
     <div class="footer-container">
@@ -17,13 +16,13 @@
       </div>
 
       <div class="social-media">
-        <a href="https://www.instagram.com" class="social-icon" target="_blank">
+        <a href="https:
           <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://www.facebook.com" class="social-icon" target="_blank">
+        <a href="https:
           <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://www.x.com" class="social-icon" target="_blank">
+        <a href="https:
           <i class="fa-brands fa-x-twitter"></i>
         </a>
       </div>
@@ -40,4 +39,3 @@
 </footer>
 
 </html>
-

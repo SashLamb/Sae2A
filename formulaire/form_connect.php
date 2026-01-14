@@ -33,18 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'photo_profil' => $user['photo_profil']
         ];
 
-
             if (isset($_POST['remember_me'])) {
-    // 1. Générer deux tokens aléatoires
-    $selector = bin2hex(random_bytes(10)); // Sert d'ID public pour le cookie
-    $validator = bin2hex(random_bytes(32)); // Sert de mot de passe pour le cookie
     
-    // 2. Créer le cookie : format "selecteur:validateur"
-    // Expire dans 30 jours
+    $selector = bin2hex(random_bytes(10)); 
+    $validator = bin2hex(random_bytes(32)); 
+    
     setcookie("remember_me", $selector . ":" . $validator, time() + (86400 * 30), "/", "", true, true); 
-    // Note: les derniers true, true activent Secure (HTTPS) et HttpOnly (anti-XSS)
-
-    // 3. Stocker le hash du validateur en BDD
+    
     $hashed_validator = hash('sha256', $validator);
     $expiry = date('Y-m-d H:i:s', time() + (86400 * 30));
 

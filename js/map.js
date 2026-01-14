@@ -10,10 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log("Erreur chargement favoris", e);
     }
 
-    // ============================================================
-    // 0. FONCTION DE COMPRESSION D'IMAGE (CÔTÉ CLIENT)
-    // ============================================================
-    
     function compresserImageJS(file, quality = 0.7, maxWidth = 1920) {
         return new Promise((resolve, reject) => {
             const fileName = file.name;
@@ -52,10 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ============================================================
-    // 0b. UTILITAIRES DE TEMPS ET DISTANCE (AJOUTÉ)
-    // ============================================================
-    
     function formatDuration(seconds) {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
@@ -72,13 +64,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                date.getMinutes().toString().padStart(2, '0');
     }
 
-    // ============================================================
-    // 1. INITIALISATION DE LA CARTE & VARIABLES
-    // ============================================================
-
     let map = L.map('map').setView([46.5, 2.5], 6);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https:
         maxZoom: 19,
         attribution: '@ OpenStreetMap'
     }).addTo(map);
@@ -95,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
  
     const segmentColors = [
-        '#0B667D', '#2E8B57', '#FF7F50', '#BF092F', '#8e44ad', '#d35400', '#2980b9', // Tes couleurs originales
+        '#0B667D', '#2E8B57', '#FF7F50', '#BF092F', '#8e44ad', '#d35400', '#2980b9', 
         '#16A085', 
         '#E67E22', 
         '#8E44AD', 
@@ -111,10 +99,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         '#D35400'  
     ];
 
-    // ============================================================
-    // 1b. CHARGEMENT DES FAVORIS SUR LA CARTE
-    // ============================================================
-    
     const favoriteIcon = L.divIcon({
         html: '<div style="font-size: 24px; color: #f1c40f; text-shadow: 0 0 3px black;">⭐</div>',
         className: 'fav-marker-icon',
@@ -195,9 +179,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     loadMapFavorites();
  
-    // ============================================================
-    // 2. GESTION DU STATUT & VISIBILITÉ
-    // ============================================================
     const statusSelect = document.getElementById('roadtripStatut');
     const visibilitySelect = document.getElementById('roadtripVisibilite');
 
@@ -211,28 +192,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ============================================================
-    // 3. FONCTIONS UTILITAIRES
-    // ============================================================
-    
     async function getCoordonnees(ville) {
-        /* List of the countries avalaible for research of a city (the API will only search the name in those
-        country) All europe is here*/
+        
         const europeCodes = [
-            "fr","be","ch","lu", // France, Belguim, Switzerland, Luxemburg
-            "de","at","li", // Germany, Austria, Liechtenstein
-            "it","sm","va", // Italy, San-Marino, Vatican city
-            "es","pt","ad", // Spain, Portugal, Andorra
-            "gb","ie", // Great Britain, Ireland
-            "nl","dk","no","se","fi","is", // Netherlands, Danemark, Norway, Sweden, Finland, Iceland
-            "pl","cz","sk","hu", // Poland, Czech Republic, Slovakia, Hungary
-            "ee","lv","lt", // Estonia, latvia, lethuania
-            "ro","bg","gr","cy","mt", // Romania, Bulgaria, Greece, Cyprus, Malta
-            "si","hr","ba","rs","me","al","mk","xk", // Slovenia, Croatia, Bosnia, Serbia, Montenegro, Albania, North Macedonia, Kosovo
-            "ua","md","by","ge","am","az" // Ukraine, Moldova, Belarus, Georgia, Armenia, Azerbaidjan
+            "fr","be","ch","lu", 
+            "de","at","li", 
+            "it","sm","va", 
+            "es","pt","ad", 
+            "gb","ie", 
+            "nl","dk","no","se","fi","is", 
+            "pl","cz","sk","hu", 
+            "ee","lv","lt", 
+            "ro","bg","gr","cy","mt", 
+            "si","hr","ba","rs","me","al","mk","xk", 
+            "ua","md","by","ge","am","az" 
         ].join(',');
 
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(ville)}&limit=1&accept-language=fr&countrycodes=${europeCodes}`;
+        const url = `https:
         
         try {
             const resp = await fetch(url);
@@ -263,12 +239,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             this.removeAttribute('data-full-name');
             this.style.backgroundColor = ''; 
         });
-        // -----------------------------------------------------------------------
-
+        
         $(element).autocomplete({
             source: function(request, response) {
-                // Appel API Photon
-                const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(request.term)}&lang=fr&limit=15`;
+                
+                const url = `https:
                 
                 $.ajax({
                     url: url,
@@ -277,7 +252,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         let suggestions = [];
                         let seen = new Set();
 
-                        // Liste des codes pays européens pour le filtrage
                         const europeanCountryCodes = [
                             "FR","BE","CH","LU","DE","AT","LI","IT","SM","VA","ES","PT","AD",
                             "GB","IE","NL","DK","NO","SE","FI","IS","PL","CZ","SK","HU","EE",
@@ -289,7 +263,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                             const p = item.properties;
                             const countryCode = p.countrycode; 
 
-                            // FILTRE : On ne garde que si le pays est dans notre liste européenne
                             if (!europeanCountryCodes.includes(countryCode)) {
                                 return; 
                             }
@@ -360,10 +333,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // ============================================================
-    // 4. CHARGEMENT MODE ÉDITION
-    // ============================================================
-
     if (typeof MODE_EDITION !== 'undefined' && MODE_EDITION === true && typeof EXISTING_TRAJETS !== 'undefined') {
         await loadExistingRoadTrip();
     } else if (currentStartCity) {
@@ -410,10 +379,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // ============================================================
-    // 5. AJOUT DE SEGMENTS
-    // ============================================================
-    
     async function _ajouterSegmentEntre(startName, startCoords, endName, endCoords, index, strategy, existingData = null) {
         const modeTransport = existingData ? existingData.mode : 'Voiture';
         console.log(modeTransport);
@@ -426,7 +391,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         coordsList.push(endCoords);
 
         const coordString = coordsList.map(c => `${c[1]},${c[0]}`).join(';');
-        const url = `https://router.project-osrm.org/route/v1/${currentProfile}/${coordString}?overview=full&geometries=geojson`;
+        const url = `https:
  
         try {
             const resp = await fetch(url);
@@ -447,8 +412,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modeTransport: modeTransport,
                 options: {},
                 date: existingData ? existingData.date_trajet : '',
-                distance: route.distance, // Mètres
-                duration: route.duration, // Secondes
+                distance: route.distance, 
+                duration: route.duration, 
                 legs: route.legs
             };
             segments.push(segData);
@@ -472,7 +437,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             timeInput.addEventListener('change', (e) => {
                 segments[index].heure_depart = e.target.value;
-                updateLegendHtml(index); // Relance le calcul de l'itinéraire horaire
+                updateLegendHtml(index); 
             });
             
             const transportBtns = clone.querySelectorAll('.transport-btn');
@@ -500,7 +465,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!userFavorites || userFavorites.length === 0) return null;
 
         const select = document.createElement('select');
-        // MODIFICATION ICI : padding ajusté et border-radius 15px pour correspondre aux inputs
+        
         select.style.cssText = "width: 100%; margin-bottom: 10px; padding: 10px 14px; border: 1px solid #ddd; border-radius: 15px; background-color: #fff; color: #555; font-size: 1rem; cursor: pointer;";
         
         let optionsHtml = '<option value="">⭐ Choisir un favori...</option>';
@@ -531,7 +496,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnAddSegment.style.display = 'none'; 
             let html = '';
             
-            // Construction du HTML (inchangé)
             if (!currentStartCoords) {
                 html += `<div class="new-block-field"><label class="new-block-label">Départ :</label><input type="text" id="inputStartBlock" class="new-block-input"></div>`;
             } else {
@@ -546,9 +510,6 @@ document.addEventListener('DOMContentLoaded', async () => {
  
             newBlockFormContainer.innerHTML = html;
 
-            // --- MODIFICATION : AJOUT DES MENUS DÉROULANTS ---
-            
-            // 1. Menu pour le DÉPART (seulement si c'est le tout premier trajet)
             const inputStart = document.getElementById('inputStartBlock');
             if (inputStart) {
                 const selectStart = createFavSelectForInput('inputStartBlock');
@@ -558,7 +519,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 initAutocomplete(inputStart);
             }
             
-            // 2. Menu pour l'ARRIVÉE (toujours présent)
             const inputEnd = document.getElementById('inputEndBlock');
             if (inputEnd) {
                 const selectEnd = createFavSelectForInput('inputEndBlock');
@@ -567,9 +527,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 initAutocomplete(inputEnd);
             }
-            // ---------------------------------------------------
- 
-            // Gestion des boutons Annuler / Valider (Code existant conservé)
+            
             document.getElementById('btnCancelBlock').addEventListener('click', () => {
                 newBlockFormContainer.innerHTML = '';
                 btnAddSegment.style.display = 'block';
@@ -609,7 +567,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 addMarker(endName, endCoords, "ville", endName);
                 
                 currentStartCity = endName;
-                currentStartCoords = endCoords; // On garde les coordonnées réelles pour le prochain trajet
+                currentStartCoords = endCoords; 
                 
                 newBlockFormContainer.innerHTML = '';
                 btnAddSegment.style.display = 'block';
@@ -617,24 +575,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ============================================================
-    // 6. CALCUL D'ITINÉRAIRE (MODIFIÉ)
-    // ============================================================
-
     async function updateRouteSegment(index, mode, options = {}) {
         const seg = segments[index];
         if (!seg) return;
 
-        // Mapping des serveurs spécifiques pour chaque mode (plus fiable que le profil seul)
         const servers = {
-            'Voiture': 'https://routing.openstreetmap.de/routed-car',
-            'Velo': 'https://routing.openstreetmap.de/routed-bike',
-            'Marche': 'https://routing.openstreetmap.de/routed-foot'
+            'Voiture': 'https:
+            'Velo': 'https:
+            'Marche': 'https:
         };
         
         const baseUrl = servers[mode] || servers['Voiture'];
 
-        // Préparation des coordonnées (Long,Lat pour OSRM)
         let points = [seg.startCoord];
         if (seg.sousEtapes) {
             seg.sousEtapes.forEach(se => { if(se.coords) points.push(se.coords); });
@@ -651,28 +603,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (data.code === 'Ok') {
                 const route = data.routes[0];
 
-                // 1. SUPPRESSION RADICALE : On retire l'ancienne ligne de la carte
                 if (seg.line) {
                     map.removeLayer(seg.line);
                 }
 
-                // 2. MISE À JOUR DES DONNÉES
                 seg.distance = route.distance;
                 seg.duration = route.duration;
                 seg.modeTransport = mode;
 
-                // 3. CRÉATION DE LA NOUVELLE LIGNE
-                // On change le style (pointillés pour vélo/marche) pour vérifier visuellement
                 const lineStyle = {
                     color: seg.couleurSegment,
                     weight: 6,
                     opacity: 0.8,
-                    dashArray: mode !== 'Voiture' ? '10, 10' : null // Pointillés si pas voiture
+                    dashArray: mode !== 'Voiture' ? '10, 10' : null 
                 };
 
                 seg.line = L.geoJSON(route.geometry, lineStyle).addTo(map);
 
-                // 4. MISE À JOUR DE LA LÉGENDE
                 updateLegendHtml(index);
                 
                 console.log(`Succès ! Mode: ${mode}, Route mise à jour.`);
@@ -681,10 +628,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Erreur de mise à jour de la route :", e);
         }
     }
-    // ============================================================
-    // 7. ÉDITEUR SOUS-ÉTAPES ET LÉGENDE (MODIFIÉ)
-    // ============================================================
-
+    
     let currentSegmentIndex = null;
     const subEtapesContainer = document.getElementById('subEtapesContainer');
     
@@ -696,10 +640,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ul = li.querySelector('.sousEtapesList');
         let html = ``;
         
-        // 1. Heure de départ initiale (ex: "08:00")
         let currentClock = seg.heure_depart; 
 
-        // Fonction utilitaire pour ajouter du temps (secondes) à une heure (HH:mm)
         function addTime(startTime, secondsToAdd) {
             const [h, m] = startTime.split(':').map(Number);
             const date = new Date();
@@ -709,16 +651,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 date.getMinutes().toString().padStart(2, '0');
         }
 
-        // Fonction utilitaire pour convertir "HH:mm" en secondes
         function durationToSeconds(timeStr) {
             const [h, m] = timeStr.split(':').map(Number);
             return (h * 3600) + (m * 60);
         }
 
         if(seg.legs) {
-            // Parcours des sous-étapes et des "legs" (tronçons entre 2 points)
+            
             seg.legs.forEach((leg, i) => {
-                // On ajoute le temps de trajet du tronçon
+                
                 currentClock = addTime(currentClock, leg.duration);
                 
                 if (i < seg.sousEtapes.length) {
@@ -727,7 +668,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <b>Arrivée à ${getNomSimple(se.nom)} : ${currentClock}</b><br>
                                 <small>Pause de ${se.heure}h</small></li>`;
                     
-                    // On ajoute le temps de pause passé sur place
                     currentClock = addTime(currentClock, durationToSeconds(se.heure));
                     html += `<li style="list-style:none; font-size:0.8em; color:gray;">(Départ prévu à ${currentClock})</li>`;
                 }
@@ -763,7 +703,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         else addSousEtapeForm();
     }
     
-    // Ajout d'une ligne de formulaire sous-étape
     function addSousEtapeForm(data = {}) {
         const uniqueId = 'editor-' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         const clone = document.getElementById('template-sub-etape').content.cloneNode(true);
@@ -773,10 +712,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         inputNom.value = data.nom || '';
         div.querySelector('.subEtapeHeure').value = data.heure || '';
         
-        // --- CRÉATION DU SELECT FAVORIS ---
         if (userFavorites.length > 0) {
             const selectFav = document.createElement('select');
-            // MODIFICATION ICI : même style harmonisé
+            
             selectFav.style.cssText = "width: 100%; margin-bottom: 10px; padding: 10px 14px; border: 1px solid #ddd; border-radius: 15px; background-color: #fff; color: #555; font-size: 1rem; cursor: pointer;";
             
             let optionsHtml = '<option value="">⭐ Insérer un favori...</option>';
@@ -798,8 +736,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             inputNom.parentNode.insertBefore(selectFav, inputNom);
         }
-        // ---------------------------------------------
-
+        
         const txt = div.querySelector('.subEtapeRemarque');
         txt.id = uniqueId; 
         txt.value = data.remarque || '';
@@ -823,19 +760,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 plugins: 'image link lists table code help wordcount',
                 toolbar: 'undo redo | bold italic | bullist numlist | link image | table | code',
 
-                /* --- GESTION DES IMAGES --- */
                 image_title: true,
                 automatic_uploads: true,
-                // L'URL de ton script PHP créé à l'étape 1
+                
                 images_upload_url: '/formulaire/traitementImageTiny.php', 
                 file_picker_types: 'image',
                 
-                // Empêche TinyMCE de convertir les URLs en relatif "../uploads" qui casseraient sur d'autres pages
                 relative_urls: false, 
                 remove_script_host: false,
                 convert_urls: true,
 
-                // Callback pour la compression et l'upload
                 file_picker_callback: (cb, value, meta) => {
                     const input = document.createElement('input');
                     input.setAttribute('type', 'file');
@@ -852,13 +786,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                             img.src = readerEvent.target.result;
 
                             img.onload = () => {
-                                // Paramètres de compression
+                                
                                 const MAX_WIDTH = 1200;
                                 const MAX_HEIGHT = 1200;
                                 let width = img.width;
                                 let height = img.height;
 
-                                // Calcul du redimensionnement
                                 if (width > height) {
                                     if (width > MAX_WIDTH) {
                                         height *= MAX_WIDTH / width;
@@ -871,29 +804,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     }
                                 }
 
-                                // Création du Canvas pour dessiner l'image redimensionnée
                                 const canvas = document.createElement('canvas');
                                 canvas.width = width;
                                 canvas.height = height;
                                 const ctx = canvas.getContext('2d');
                                 ctx.drawImage(img, 0, 0, width, height);
 
-                                // Conversion en Blob (Fichier compressé)
-                                // Le 0.7 correspond à 70% de qualité JPEG
                                 canvas.toBlob((blob) => {
                                     const newFile = new File([blob], file.name, { 
                                         type: 'image/jpeg', 
                                         lastModified: Date.now() 
                                     });
 
-                                    // Ajout au cache de TinyMCE pour déclencher l'upload automatique
                                     const id = 'blobid' + (new Date()).getTime();
                                     const blobCache = tinymce.activeEditor.editorUpload.blobCache;
                                     const blobInfo = blobCache.create(id, newFile, blob);
                                     
                                     blobCache.add(blobInfo);
 
-                                    // Appelle le callback pour afficher l'image (en base64) en attendant l'upload réel
                                     cb(blobInfo.blobUri(), { title: file.name });
                                     
                                 }, 'image/jpeg', 0.7); 
@@ -917,31 +845,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('saveSegment').onclick = async () => {
         const seg = segments[currentSegmentIndex];
         const newSubs = [];
-        // On récupère toutes les divs subEtape
+        
         for (const div of document.querySelectorAll('.subEtape')) {
-            const inputNom = div.querySelector('.subEtapeNom'); // On cible l'élément input direct
+            const inputNom = div.querySelector('.subEtapeNom'); 
             const nom = inputNom.value.trim();
             const heure = div.querySelector('.subEtapeHeure').value;
-            // Récupération contenu TinyMCE
+            
             const idEditor = div.querySelector('.subEtapeRemarque').id;
             const remarque = tinymce.get(idEditor) ? tinymce.get(idEditor).getContent() : "";
             
             if(!nom || !heure) continue;
 
-            // --- CORRECTION ICI ---
             let coords = null;
             const latAttr = inputNom.getAttribute('data-lat');
             const lonAttr = inputNom.getAttribute('data-lon');
 
-            // 1. Si Photon a déjà donné les coords (via le clic autocomplétion), on les utilise !
             if (latAttr && lonAttr) {
                 coords = [parseFloat(latAttr), parseFloat(lonAttr)];
             } else {
-                // 2. Sinon (saisie manuelle sans clic), on demande à Nominatim
+                
                 coords = await getCoordonnees(nom);
             }
-            // ----------------------
-
+            
             if(coords) {
                 newSubs.push({ nom, heure, remarque, coords, lat: coords[0], lon: coords[1] });
                 addMarker(nom, coords, "sous_etape", `<b>${nom}</b><br>${heure}`);
@@ -954,12 +879,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await updateRouteSegment(currentSegmentIndex, seg.modeTransport || 'Voiture');
         document.getElementById('segmentFormContainer').style.display = 'none';
     };
-
-    // ... (Code précédent inchangé) ...
-
-    // ============================================================
-    // 8. SAUVEGARDE FINALE (VERSION OPTIMISÉE IUT)
-    // ============================================================
 
     document.getElementById('saveRoadtrip').onclick = async (e) => {
         if(segments.length === 0) return alert('Aucun trajet !');
@@ -977,12 +896,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             formData.append('visibilite', document.getElementById('roadtripVisibilite').value);
             formData.append('statut', document.getElementById('roadtripStatut').value);
             
-            // Gestion Photo de couverture
             const fileInput = document.getElementById('roadtripPhoto');
             if(fileInput.files.length > 0) {
                 const originalFile = fileInput.files[0];
                 if(originalFile.type.startsWith('image/')) {
-                    // On compresse aussi la photo de couverture pour être gentil avec le serveur
+                    
                     const compressedFile = await compresserImageJS(originalFile, 0.7, 1200);
                     formData.append('photo_cover', compressedFile);
                 } else {
@@ -990,23 +908,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            // --- FONCTION DE NETTOYAGE ---
-            // Cette fonction crée une copie propre des données pour l'envoi
             const cleanSegmentsForSave = (segmentsSource) => {
                 return segmentsSource.map((s, index) => {
                     const timeInput = document.querySelector(`li[data-index="${index}"] .legend-time-input`);
                     
-                    // Nettoyage des sous-étapes
                     const cleanSousEtapes = s.sousEtapes.map(se => {
                         let desc = se.remarque || "";
-                        // REGEX MAGIQUE : Elle retire les images en base64 (src="data:image...")
-                        // qui font planter le serveur, mais garde les images uploadées (src="/uploads/...")
+                        
                         desc = desc.replace(/<img[^>]+src="data:image\/[^">]+"[^>]*>/g, '[Image trop lourde retirée - Utilisez le bouton upload]');
                         
                         return {
                             nom: se.nom,
                             heure: se.heure,
-                            remarque: desc, // Description nettoyée
+                            remarque: desc, 
                             lat: se.lat || se.coords[0],
                             lon: se.lon || se.coords[1]
                         };
@@ -1025,23 +939,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
             };
 
-            // 1. On nettoie les données
             const cleanTrajets = cleanSegmentsForSave(segments);
             console.log("Données nettoyées prêtes à l'envoi :", cleanTrajets);
 
-            // 2. On utilise la technique du BLOB (Fichier virtuel)
-            // C'est indispensable pour contourner la limite 'max_input_vars' du serveur IUT
             const jsonString = JSON.stringify(cleanTrajets);
             const blob = new Blob([jsonString], { type: 'application/json' });
             formData.append('trajets_file', blob, 'trajets.json');
 
-            // Ajout d'un tableau vide pour 'villes' pour éviter l'erreur PHP
             formData.append('villes', JSON.stringify([]));
 
-            // 3. Envoi
             const resp = await fetch('/formulaire/saveRoadtrip.php', { method: 'POST', body: formData });
             
-            // Lecture de la réponse brute pour débogage si le JSON plante
             const textResp = await resp.text(); 
             
             try {

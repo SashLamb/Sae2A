@@ -1,5 +1,5 @@
 <?php
-// Fonction de compression + création miniature
+
 function compressImage($source, $dest, $quality = 75, $thumbWidth = 200, $thumbDir = null) {
     $info = getimagesize($source);
     $mime = $info['mime'];
@@ -12,10 +12,9 @@ function compressImage($source, $dest, $quality = 75, $thumbWidth = 200, $thumbD
         $pngQuality = 9 - floor(($quality / 100) * 9);
         imagepng($img, $dest, $pngQuality);
     } else {
-        return false; // format non supporté
+        return false; 
     }
 
-    // création miniature
     if($thumbDir){
         $ratio = $info[0]/$info[1];
         $thumbHeight = intval($thumbWidth / $ratio);

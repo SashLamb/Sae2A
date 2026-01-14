@@ -4,7 +4,6 @@ include_once __DIR__ . '/bd/lec_bd.php';
 
 $id_utilisateur = $_SESSION['utilisateur']['id'] ?? null;
 
-// On récupère les road trips publics
 $sql = "SELECT r.*, u.pseudo 
         FROM roadtrip r 
         LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id 
@@ -40,14 +39,14 @@ if ($id_utilisateur) {
             margin-bottom: 10px;
         }
         .status-termine {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: 
+            color: 
+            border: 1px solid 
         }
         .status-brouillon {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+            background-color: 
+            color: 
+            border: 1px solid 
         }
     </style>
 </head>

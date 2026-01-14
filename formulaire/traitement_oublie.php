@@ -10,7 +10,6 @@ use PHPMailer\PHPMailer\SMTP;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['email'])) {
     $email = $_POST['email'];
 
-    
     $stmt = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
@@ -26,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['email'])) {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'];
         $basePath = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'])), '/');
-        $link = $protocol . '://' . $host . $basePath . '/reset_password.php?token=' . $token;
+        $link = $protocol . ':
 
         $mail = new PHPMailer(true);
         try {
@@ -40,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['email'])) {
             $mail->Port       = 587;
             $mail->CharSet    = 'UTF-8';
 
-            
            $mail->setFrom('no-reply@tripsandroads.com', 'Trips & Roads');
             $mail->addAddress($email);
             $mail->isHTML(true);

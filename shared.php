@@ -62,8 +62,8 @@ function getTransportIcon($type) {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($roadTrip['titre']) ?> - Road Trip Partagé</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https:
+    <script src="https:
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profil.css">
    

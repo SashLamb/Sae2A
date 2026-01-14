@@ -6,7 +6,6 @@ if (!isset($_SESSION['utilisateur'])) {
     exit;
 }
 
-
 $user = $_SESSION['utilisateur'];
 ?>
 <!DOCTYPE html>
@@ -43,7 +42,6 @@ $user = $_SESSION['utilisateur'];
             </ul>
         </nav>
     </aside>
-
 
    <section class="cont_access">
     <form id="AccessForm" class="AccessForm" action="" method="post">
@@ -87,10 +85,8 @@ $user = $_SESSION['utilisateur'];
             </label>
         </div>
 
-        
     </form> 
 </section>
-
 
 </main>
     <?php include __DIR__ . "/modules/footer.php" ?>

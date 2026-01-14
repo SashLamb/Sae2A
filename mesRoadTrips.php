@@ -21,7 +21,7 @@ $roadtrips = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Mes Road Trips</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https:
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/page_link.css">
 

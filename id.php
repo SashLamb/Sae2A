@@ -70,7 +70,6 @@ include_once __DIR__ . "/modules/header.php"
                     </p>
             </form>
 
-
             <form id="loginForm" class="form-box" action = "formulaire/form_connect.php" method = "post">
                 <h2 id="register-title">Connexion</h2>
                 

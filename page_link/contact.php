@@ -35,7 +35,6 @@ include_once __DIR__ . "/../modules/header.php";
                 <p>tripsandroads@gmail.com</p>
             </div>
 
-           
         </div>
 
         <div class="contact-form">
@@ -54,7 +53,6 @@ include_once __DIR__ . "/../modules/header.php";
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
-
 
             <form action="" method="POST">
                 <div class="form-group">
@@ -88,7 +86,6 @@ include_once __DIR__ . "/../modules/header.php";
 
     </div>
 </main>
-
 
 <script src = "/../js/recherche.js" ></script>
 <?php     

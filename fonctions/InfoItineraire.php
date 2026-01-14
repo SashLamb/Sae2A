@@ -27,7 +27,7 @@ function calculerDistanceOSRM($coordDepart, $coordArrivee, $modeTransport = 'voi
     
     $profile = $profiles[$modeTransport] ?? 'car';
 
-    $url = "http://router.project-osrm.org/route/v1/{$profile}/" .
+    $url = "http:
            "{$coordDepart['lon']},{$coordDepart['lat']};" .
            "{$coordArrivee['lon']},{$coordArrivee['lat']}?overview=false";
 
@@ -41,7 +41,7 @@ function calculerDistanceOSRM($coordDepart, $coordArrivee, $modeTransport = 'voi
         return false;
     }
 
-    return round($data['routes'][0]['distance'] / 1000, 2); // km
+    return round($data['routes'][0]['distance'] / 1000, 2); 
 }
 
 function calculerTempsOSRM($coordDepart, $coordArrivee, $modeTransport = 'voiture') {
@@ -53,7 +53,7 @@ function calculerTempsOSRM($coordDepart, $coordArrivee, $modeTransport = 'voitur
     
     $profile = $profiles[$modeTransport] ?? 'car';
 
-    $url = "http://router.project-osrm.org/route/v1/{$profile}/" .
+    $url = "http:
            "{$coordDepart['lon']},{$coordDepart['lat']};" .
            "{$coordArrivee['lon']},{$coordArrivee['lat']}?overview=false";
 

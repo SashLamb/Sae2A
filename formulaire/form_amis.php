@@ -11,15 +11,13 @@ $utilisateur_id = $_SESSION['utilisateur']['id'];
 $message = '';
 $recherche = $_GET['recherche'] ?? '';
 
-// === AJOUTER UN AMI ===
 if (isset($_GET['add'])) {
     $ami_id = (int)$_GET['add'];
     
-    // Vérifier que ce n'est pas soi-même
     if ($ami_id == $utilisateur_id) {
         $message = "Vous ne pouvez pas vous ajouter vous-même.";
     } else {
-        // Vérifier si une relation existe déjà (dans n'importe quel sens)
+        
         $stmt = $pdo->prepare("
             SELECT * FROM amis 
             WHERE (id_utilisateur = ? AND id_ami = ?) OR (id_utilisateur = ? AND id_ami = ?)
@@ -30,7 +28,7 @@ if (isset($_GET['add'])) {
         if ($existing) {
             $message = "Une relation existe déjà avec cet utilisateur.";
         } else {
-            // Créer la demande d'ami
+            
             $stmt = $pdo->prepare("INSERT INTO amis (id_utilisateur, id_ami, statut) VALUES (?, ?, 'en_attente')");
             $stmt->execute([$utilisateur_id, $ami_id]);
             $message = "Demande d'ami envoyée !";
@@ -38,11 +36,9 @@ if (isset($_GET['add'])) {
     }
 }
 
-// === ACCEPTER UNE DEMANDE ===
 if (isset($_GET['action']) && $_GET['action'] === 'accepter' && isset($_GET['id'])) {
     $demandeur_id = (int)$_GET['id'];
     
-    // Mettre à jour le statut
     $stmt = $pdo->prepare("
         UPDATE amis SET statut = 'accepte' 
         WHERE id_utilisateur = ? AND id_ami = ? AND statut = 'en_attente'
@@ -51,21 +47,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'accepter' && isset($_GET['id'
     $message = "Demande acceptée !";
 }
 
-// === REFUSER UNE DEMANDE ===
 if (isset($_GET['action']) && $_GET['action'] === 'refuser' && isset($_GET['id'])) {
     $demandeur_id = (int)$_GET['id'];
     
-    // Supprimer la demande
     $stmt = $pdo->prepare("DELETE FROM amis WHERE id_utilisateur = ? AND id_ami = ?");
     $stmt->execute([$demandeur_id, $utilisateur_id]);
     $message = "Demande refusée.";
 }
 
-// === SUPPRIMER UN AMI ===
 if (isset($_GET['delete'])) {
     $ami_id = (int)$_GET['delete'];
     
-    // Supprimer la relation dans les deux sens (car elle peut être dans n'importe quel sens)
     $stmt = $pdo->prepare("
         DELETE FROM amis 
         WHERE (id_utilisateur = ? AND id_ami = ?) OR (id_utilisateur = ? AND id_ami = ?)
@@ -74,7 +66,6 @@ if (isset($_GET['delete'])) {
     $message = "Ami supprimé. Vous pouvez le réajouter si vous le souhaitez.";
 }
 
-// === RECHERCHER DES UTILISATEURS ===
 $utilisateurs = [];
 if ($recherche) {
     $stmt = $pdo->prepare("
@@ -88,7 +79,6 @@ if ($recherche) {
     $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// === RÉCUPÉRER MES AMIS (statut accepté) ===
 $stmt = $pdo->prepare("
     SELECT u.id, u.nom, u.prenom, u.photo_profil
     FROM amis a
@@ -103,7 +93,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$utilisateur_id, $utilisateur_id, $utilisateur_id, $utilisateur_id]);
 $amis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// === RÉCUPÉRER LES DEMANDES REÇUES ===
 $stmt = $pdo->prepare("
     SELECT u.id, u.nom, u.prenom, u.photo_profil
     FROM amis a

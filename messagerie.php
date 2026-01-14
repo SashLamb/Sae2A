@@ -89,7 +89,7 @@ if ($conversation_id) {
 <head>
     <meta charset="UTF-8">
     <title>Messagerie - Trips & Roads</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https:
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/messagerie.css">
 </head>

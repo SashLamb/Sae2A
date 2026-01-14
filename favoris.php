@@ -58,7 +58,7 @@ function getIconForCategory($cat) {
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/accessibilite.css">
     <link rel="stylesheet" href="/css/favoris.css">
-    <script src="https://kit.fontawesome.com/d76759a8b0.js" crossorigin="anonymous"></script>
+    <script src="https:
 </head>
 <body>
 <?php include_once __DIR__ . "/modules/header.php"; ?>
@@ -78,8 +78,8 @@ function getIconForCategory($cat) {
                 <?php foreach ($favorisRT as $fav): ?>
                     <div class="roadtrip-card">
                         <?php 
-                        // Gestion de l'image : on vérifie 'photo' et 'photo_cover' pour être sûr
-                        $imagePath = "default_trip.jpg"; // Image par défaut
+                        
+                        $imagePath = "default_trip.jpg"; 
                         $hasImage = false;
 
                         if (!empty($fav['photo'])) {
@@ -94,7 +94,7 @@ function getIconForCategory($cat) {
                             <img src="/uploads/roadtrips/<?= htmlspecialchars($imagePath) ?>" 
                                  alt="Photo du road trip" class="roadtrip-photo">
                         <?php else: ?>
-                             <img src="/img/default_trip.jpg" alt="RoadTrip" class="roadtrip-photo" style="background:#ddd;">
+                             <img src="/img/default_trip.jpg" alt="RoadTrip" class="roadtrip-photo" style="background:
                         <?php endif; ?>
 
                         <h3><?= htmlspecialchars($fav['titre']) ?></h3>
@@ -144,7 +144,7 @@ function getIconForCategory($cat) {
 
                             <div class="roadtrip-buttons" style="margin-top: 15px;">
                                 <a class="btn-map" target="_blank" 
-                                   href="https://www.google.com/maps/search/?api=1&query=<?= $lieu['latitude'] ?>,<?= $lieu['longitude'] ?>">
+                                   href="https:
                                     <i class="fas fa-map-marked-alt"></i> Carte
                                 </a>
 
