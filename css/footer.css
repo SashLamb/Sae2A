@@ -1,4 +1,6 @@
-
+/* ==============================
+   FOOTER
+============================== */
 footer {
   transition: all 0.5s ease;
   background-color: var(--bleu_fonce);
@@ -62,6 +64,7 @@ footer .social-icon:hover {
   transform: translateY(-5px);
 }
 
+
 footer .footer-links {
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
@@ -86,6 +89,9 @@ footer .footer-links > li > a:hover {
   transform: scale(1.15); 
 }
 
+/* ==============================
+   RESPONSIVE (Mobile / Tablette)
+============================== */
 @media(max-width: 768px){
   footer {
     padding: 40px 0;
@@ -97,6 +103,7 @@ footer .footer-links > li > a:hover {
     width: 90%;
   }
 
+
   footer .image-container,
   footer .social-media,
   footer .footer-links {
@@ -106,6 +113,7 @@ footer .footer-links > li > a:hover {
     
   }
 
+  
   footer .footer-links {
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
@@ -121,6 +129,7 @@ footer .footer-links > li > a:hover {
 }
 
 @media(max-width: 426px){
+  
   
   footer .footer-links > li > a {
     font-size: 1.5rem;

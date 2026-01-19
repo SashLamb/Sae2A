@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../include/init.php';
 require_once __DIR__ . '/../bd/lec_bd.php';
 
+/** @var PDO $pdo */
+
 if (!isset($_SESSION['utilisateur'])) {
     header("Location: ../id.php");
     exit;
@@ -25,9 +27,11 @@ $town        = trim($_POST['town'] ?? "");
 $phone       = trim($_POST['phone'] ?? "");
 $birthdate   = trim($_POST['birthdate'] ?? "");
 
+
 $new_password = $_POST['password'] ?? "";
 $confirm_password = $_POST['confirm_password'] ?? "";
 $password_hash = null;
+
 
 if (!empty($new_password)) {
     if ($new_password !== $confirm_password) {
@@ -35,6 +39,7 @@ if (!empty($new_password)) {
     }
     $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 }
+
 
 $upload_dir = __DIR__ . '/../uploads/pp/';
 if (!is_dir($upload_dir)) {

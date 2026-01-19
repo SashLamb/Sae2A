@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // On lance la carte globale
     initGlobalMap();
-    
+    // On lance le calcul des distances/temps pour l'affichage texte
     calculerTousLesSegments();
 });
 
@@ -12,6 +12,9 @@ const colorsPalette = [
     '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000'
 ];
 
+/**
+ * Récupère les données proprement (Array ou Object)
+ */
 function getTrajetData(id) {
     if (!roadTripData) return null;
     if (Array.isArray(roadTripData)) {
@@ -21,13 +24,16 @@ function getTrajetData(id) {
     }
 }
 
+/**
+ * 1. CARTE GLOBALE (D'ENSEMBLE)
+ */
 async function initGlobalMap() {
     if (!document.getElementById('map-global')) return;
     if (typeof roadTripData === 'undefined' || !roadTripData) return;
 
     const map = L.map('map-global');
     
-    L.tileLayer('https:
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
@@ -75,6 +81,9 @@ async function initGlobalMap() {
     }
 }
 
+/**
+ * 2. CARTE INDIVIDUELLE (VISUALISATION SEULE)
+ */
 async function initStepMap(id) {
     const data = getTrajetData(id);
     const divId = 'map-trajet-' + id;
@@ -106,7 +115,7 @@ async function initStepMap(id) {
     }
 
     const map = L.map(divId);
-    L.tileLayer('https:
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
@@ -119,6 +128,9 @@ async function initStepMap(id) {
     }, 50);
 }
 
+/**
+ * 3. FONCTION DE DESSIN
+ */
 async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
     const latDep = parseFloat(data.depart.lat);
     const lonDep = parseFloat(data.depart.lon);
@@ -143,11 +155,11 @@ async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
     createNumberedMarker(map, latArr, lonArr, stepCounter, color, `<b>Arrivée:</b> ${data.arrivee.nom}`, useOffset ? 'right' : null, clusterGroup);
 
     const servers = {
-        'voiture': 'https:
-        'velo': 'https:
-        'vélo': 'https:
-        'marche': 'https:
-        'à pied': 'https:
+        'voiture': 'https://routing.openstreetmap.de/routed-car',
+        'velo': 'https://routing.openstreetmap.de/routed-bike',
+        'vélo': 'https://routing.openstreetmap.de/routed-bike',
+        'marche': 'https://routing.openstreetmap.de/routed-foot',
+        'à pied': 'https://routing.openstreetmap.de/routed-foot'
     };
     
     const baseUrl = servers[data.mode] || servers['voiture'];
@@ -248,12 +260,13 @@ async function calculerHorairesTrajet(card) {
     const dataTrajet = getTrajetData(trajetId);
     
     if (!dataTrajet || !dataTrajet.hasCoords) {
-        
+        // console.warn(`Trajet ${trajetId} : coordonnées manquantes`);
         return;
     }
 
     const etapeCards = card.querySelectorAll('.sous-etape-card');
     
+    // Construction des coordonnées
     let coordsPath = `${dataTrajet.depart.lon},${dataTrajet.depart.lat}`;
     if (dataTrajet.sousEtapes && dataTrajet.sousEtapes.length > 0) {
         dataTrajet.sousEtapes.forEach(se => {
@@ -262,18 +275,23 @@ async function calculerHorairesTrajet(card) {
     }
     coordsPath += `;${dataTrajet.arrivee.lon},${dataTrajet.arrivee.lat}`;
 
+    // --- CORRECTION ICI : Utilisation des bons serveurs ---
     const servers = {
-        'voiture': 'https:
-        'velo': 'https:
-        'vélo': 'https:
-        'marche': 'https:
-        'à pied': 'https:
+        'voiture': 'https://routing.openstreetmap.de/routed-car',
+        'velo': 'https://routing.openstreetmap.de/routed-bike',
+        'vélo': 'https://routing.openstreetmap.de/routed-bike',
+        'marche': 'https://routing.openstreetmap.de/routed-foot',
+        'à pied': 'https://routing.openstreetmap.de/routed-foot'
     };
 
+    // On récupère le bon serveur, sinon voiture par défaut
     const baseUrl = servers[dataTrajet.mode] || servers['voiture'];
 
+    // Note : Sur ces serveurs spécifiques (FOSSGIS), on laisse souvent "/driving/" dans l'URL
+    // car c'est le sous-domaine (routed-foot) qui détermine la vitesse.
     const url = `${baseUrl}/route/v1/driving/${coordsPath}?overview=false&steps=false`;
-    
+    // -------------------------------------------------------
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -293,6 +311,7 @@ async function calculerHorairesTrajet(card) {
                 if (targetCard) {
                     const horaireSpan = targetCard.querySelector('.horaire-calcule');
                     const isArrival = targetCard.dataset.isArrival === '1';
+                    // Correction potentielle si 'isDeparture' n'est pas défini dans ton HTML, on vérifie juste arrival
                     
                     if (horaireSpan) {
                         if (isArrival) {
@@ -322,7 +341,7 @@ async function calculerHorairesTrajet(card) {
                     timeText += minutes + 'min';
                     
                     segmentInfo.querySelector('.segment-time').textContent = timeText;
-                    
+                    // Ajout d'une classe pour indiquer que le calcul est fait (optionnel)
                     segmentInfo.classList.add('segment-calculated');
                 }
             });

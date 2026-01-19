@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const defaultCoords = [45.75, 4.85]; 
+    const defaultCoords = [45.75, 4.85]; // Lyon par défaut
     let userCoords = defaultCoords;
     let map;
     let currentMarkers = [];
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const categorySelect = document.getElementById('categorySelect');
     const clearFilterBtn = document.getElementById('clearFilterBtn');
 
+    // Configuration étendue des catégories POI
     const poiFilters = {
         restaurant: {
             query: 'node["amenity"="restaurant"](around:2000,{lat},{lon});',
@@ -148,6 +149,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
+
+    // --- GESTION DES FAVORIS SUR LA HOME ---
+    
     const homeFavIcon = L.divIcon({
         html: '<div style="font-size: 24px; color: #f1c40f; text-shadow: 0 0 3px black;">⭐</div>',
         className: 'fav-marker-icon',
@@ -157,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function loadHomeFavorites() {
-        
+        // Vérifie si l'utilisateur est connecté (variable définie dans index.php)
         if (typeof currentUserId === 'undefined' || currentUserId === null) return;
 
         fetch('/fonctions/get_lieux_favoris.php')
@@ -177,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <br><br>
                     `;
                     
+                    // Bouton pour retirer des favoris directement depuis l'étoile
                     const btnRemove = document.createElement('button');
                     btnRemove.innerText = "❌ Retirer des favoris";
                     btnRemove.style.cssText = "background:#ffeded; color:#c0392b; border:1px solid #c0392b; border-radius:3px; cursor:pointer; font-size:11px; padding:3px 8px;";
@@ -184,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     btnRemove.onclick = function() {
                         if(confirm("Retirer ce lieu de vos favoris ?")) {
                             toggleLieuFavori(btnRemove, fav.nom_lieu, fav.adresse, lat, lon, fav.categorie);
-                            
+                            // On retire le marqueur visuellement si l'opération réussit
                             setTimeout(() => { map.removeLayer(marker); }, 500); 
                         }
                     };
@@ -196,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(e => console.error("Erreur chargement favoris home", e));
     }
 
+    // Créer une icône personnalisée
     function createCustomIcon(emoji, color) {
         return L.divIcon({
             html: `<div style="background-color: ${color}; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 18px;">${emoji}</div>`,
@@ -206,11 +212,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Initialisation de la carte
     function initializeMap(coords) {
         map = L.map('userMap').setView(coords, 13);
 
-        L.tileLayer('https:
-            attribution: '&copy; <a href="https:
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);
 
@@ -221,21 +228,27 @@ document.addEventListener("DOMContentLoaded", function () {
             updateUserPosition(clickedCoords);
         });
 
+        // --- AJOUTER CETTE LIGNE ICI ---
         loadHomeFavorites(); 
     }
 
+    // Mettre à jour la position de l'utilisateur
     function updateUserPosition(coords) {
         userCoords = coords;
         
+        // Mettre à jour le marqueur
         addUserMarker(coords);
         
+        // Centrer la carte sur la nouvelle position
         map.setView(coords, map.getZoom());
         
+        // Recharger les POI si un filtre est actif
         if (activeFilter) {
             loadPOI(activeFilter);
         }
     }
 
+    // Ajouter un marqueur pour la position de l'utilisateur
     function addUserMarker(coords) {
         if (userMarker) {
             map.removeLayer(userMarker);
@@ -252,6 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .bindPopup('<b>📍 Votre position</b><br><small>Cliquez sur la carte pour changer de position</small>');
     }
 
+    // Tenter d'obtenir la géolocalisation
     function tryGeolocation() {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -269,10 +283,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Initialiser avec fallback (ville utilisateur ou Lyon)
     function initMapWithFallback() {
         const userCity = document.getElementById('userCity').value;
         if (userCity) {
-            fetch(`https:
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(userCity)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -288,18 +303,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Démarrer avec tentative de géolocalisation
     tryGeolocation();
 
+    // Fonction pour charger les POI via Overpass API
     async function loadPOI(filterType) {
-        
+        // Supprimer les anciens marqueurs POI
         clearPOIMarkers();
 
+        // Afficher un indicateur de chargement
         showLoadingIndicator();
 
         const filter = poiFilters[filterType];
         const query = filter.query.replace(/{lat}/g, userCoords[0]).replace(/{lon}/g, userCoords[1]);
         
-        const overpassUrl = 'https:
+        const overpassUrl = 'https://overpass-api.de/api/interpreter';
         const overpassQuery = `[out:json][timeout:25];(${query});out body;`;
 
         try {
@@ -310,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await response.json();
 
+            // Ajouter les marqueurs pour chaque POI
             data.elements.forEach(element => {
                 if (element.lat && element.lon) {
                     const marker = L.marker([element.lat, element.lon], {
@@ -321,6 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         ? `${element.tags['addr:street']} ${element.tags['addr:housenumber'] || ''}`
                         : 'Adresse non disponible';
 
+                    // Création du contenu de la popup via DOM pour gérer les événements proprement
                     const popupDiv = document.createElement('div');
                     popupDiv.style.minWidth = "160px";
 
@@ -336,12 +356,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     addrEl.textContent = address;
                     popupDiv.appendChild(addrEl);
 
+                    // Ajout du bouton Favoris si l'utilisateur est connecté
+                    // (currentUserId est défini dans index.php)
                     if (typeof currentUserId !== 'undefined' && currentUserId !== null) {
                         const favBtn = document.createElement('button');
-                        favBtn.innerHTML = '<i class="far fa-star"></i> Favoris'; 
+                        favBtn.innerHTML = '<i class="far fa-star"></i> Favoris'; // FontAwesome si dispo, sinon mettre "☆ Favoris"
                         favBtn.className = "btn-fav-poi"; 
                         favBtn.style.cssText = "width: 100%; padding: 5px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; color: #f39c12; font-weight: bold; transition: all 0.2s;";
                         
+                        // Effet hover simple
                         favBtn.onmouseover = () => { favBtn.style.background = "#fff8e1"; };
                         favBtn.onmouseout = () => { favBtn.style.background = "#fff"; };
 
@@ -359,8 +382,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             hideLoadingIndicator();
 
+            // Afficher le bouton pour effacer
             clearFilterBtn.style.display = 'block';
 
+            // Afficher un message si aucun résultat
             if (data.elements.length === 0) {
                 alert(`Aucun résultat trouvé dans un rayon de 2km.`);
                 clearFilterBtn.style.display = 'none';
@@ -373,11 +398,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Supprimer tous les marqueurs POI
     function clearPOIMarkers() {
         currentMarkers.forEach(marker => map.removeLayer(marker));
         currentMarkers = [];
     }
 
+    // Indicateurs de chargement
     function showLoadingIndicator() {
         const loader = document.createElement('div');
         loader.id = 'mapLoader';
@@ -402,6 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (loader) loader.remove();
     }
 
+    // Gestionnaire pour le menu déroulant
     categorySelect.addEventListener('change', function() {
         const selectedCategory = this.value;
         
@@ -409,13 +437,14 @@ document.addEventListener("DOMContentLoaded", function () {
             activeFilter = selectedCategory;
             loadPOI(selectedCategory);
         } else {
-            
+            // Si option vide sélectionnée, effacer les marqueurs
             clearPOIMarkers();
             activeFilter = null;
             clearFilterBtn.style.display = 'none';
         }
     });
 
+    // Bouton pour effacer les marqueurs
     clearFilterBtn.addEventListener('click', function() {
         clearPOIMarkers();
         activeFilter = null;
@@ -423,10 +452,11 @@ document.addEventListener("DOMContentLoaded", function () {
         this.style.display = 'none';
     });
 
+    // Recherche de lieu en temps réel
     searchInput.addEventListener('input', function () {
         const query = searchInput.value.trim();
         if (query.length > 2) {
-            fetch(`https:
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     searchResults.innerHTML = '';
@@ -438,6 +468,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             const lat = parseFloat(item.lat);
                             const lon = parseFloat(item.lon);
                             
+                            // Mettre à jour la position avec la fonction qui recharge les filtres
                             updateUserPosition([lat, lon]);
 
                             searchResults.innerHTML = '';
@@ -452,6 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Bouton de recherche
     document.getElementById('searchBtn').addEventListener('click', function() {
         if (searchInput.value.trim().length > 2) {
             searchInput.dispatchEvent(new Event('input'));
@@ -479,12 +511,12 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.disabled = false;
             if (data.success) {
                 if (data.action === 'added') {
-                    btn.innerHTML = '<i class="fas fa-star"></i> En favoris'; 
+                    btn.innerHTML = '<i class="fas fa-star"></i> En favoris'; // Étoile pleine
                     btn.style.background = "#f39c12";
                     btn.style.color = "white";
                     alert(data.message);
                 } else {
-                    btn.innerHTML = '<i class="far fa-star"></i> Favoris'; 
+                    btn.innerHTML = '<i class="far fa-star"></i> Favoris'; // Étoile vide
                     btn.style.background = "#fff";
                     btn.style.color = "#f39c12";
                     alert(data.message);

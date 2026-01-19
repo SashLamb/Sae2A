@@ -2,12 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https:
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/header.css">
 
-    <script src="https:
+    <script src="https://kit.fontawesome.com/d76759a8b0.js" crossorigin="anonymous"></script>
 </head>
+
 
 <header>
     <nav>
@@ -61,6 +62,7 @@
 
             <?php endif; ?>
 
+            
             <li class="nav-item" id="link_PP">
                 <?php if (isset($_SESSION['utilisateur'])): ?>
 
@@ -108,6 +110,7 @@
 
         </ul>
 
+       
         <input type="checkbox" id="burger">
         <label for="burger" class="burger"><span></span></label>
 

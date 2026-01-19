@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // On lance la carte globale
     initGlobalMap();
-    
+    // On lance le calcul des distances/temps pour l'affichage texte
     calculerTousLesSegments();
 });
 
@@ -12,23 +12,29 @@ const colorsPalette = [
     '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000'
 ];
 
+/**
+ * Récupère les données proprement (Array ou Object)
+ */
 function getTrajetData(id) {
     if (!roadTripData) return null;
     if (Array.isArray(roadTripData)) {
-        
+        // Le double égal (==) est important pour matcher string "12" et int 12
         return roadTripData.find(t => t.id == id);
     } else {
         return roadTripData[id];
     }
 }
 
+/**
+ * 1. CARTE GLOBALE (D'ENSEMBLE)
+ */
 async function initGlobalMap() {
     if (!document.getElementById('map-global')) return;
     if (typeof roadTripData === 'undefined' || !roadTripData) return;
 
     const map = L.map('map-global');
     
-    L.tileLayer('https:
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
@@ -45,7 +51,7 @@ async function initGlobalMap() {
     const allTrajets = Object.values(roadTripData);
 
     for (const data of allTrajets) {
-        
+        // Sécurité : si pas de coordonnées, on passe au suivant sans planter
         if (!data.hasCoords) {
             console.warn(`Trajet ${data.id} ignoré : coordonnées manquantes.`);
             continue;
@@ -54,9 +60,10 @@ async function initGlobalMap() {
         data.color = colorsPalette[colorIndex % colorsPalette.length];
         
         try {
-            
+            // On dessine le trajet
             await drawRoute(map, data, data.color, false, true, markersCluster);
 
+            // On ajoute les points aux limites pour centrer la carte
             bounds.push([parseFloat(data.depart.lat), parseFloat(data.depart.lon)]);
             bounds.push([parseFloat(data.arrivee.lat), parseFloat(data.arrivee.lon)]);
             
@@ -78,6 +85,9 @@ async function initGlobalMap() {
     }
 }
 
+/**
+ * 2. CARTE INDIVIDUELLE (VISUALISATION SEULE)
+ */
 async function initStepMap(id) {
     const data = getTrajetData(id);
     const divId = 'map-trajet-' + id;
@@ -85,11 +95,13 @@ async function initStepMap(id) {
     
     if (!divElement) return;
 
+    // CAS 1 : Pas de données JS du tout (ne devrait plus arriver avec le fix PHP)
     if (!data) {
         divElement.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">Données introuvables.</div>';
         return;
     }
 
+    // CAS 2 : Données présentes, mais pas de coordonnées (lat/lon null)
     if (!data.hasCoords) {
         divElement.innerHTML = `
             <div style="display:flex; align-items:center; justify-content:center; height:100%; background:#f8f9fa; color:#888; text-align:center; padding:10px;">
@@ -99,11 +111,12 @@ async function initStepMap(id) {
                     <small>Les lieux "${data.depart.nom}" ou "${data.arrivee.nom}" n'ont pas encore été géolocalisés.</small>
                 </div>
             </div>`;
-        
+        // On s'assure que le conteneur est visible
         divElement.style.display = 'block';
         return;
     }
 
+    // Si la carte existe déjà, on la redimensionne juste
     if (mapInstances[id]) {
         setTimeout(() => {
             mapInstances[id].invalidateSize();
@@ -114,8 +127,9 @@ async function initStepMap(id) {
         return;
     }
 
+    // Initialisation normale de la carte
     const map = L.map(divId);
-    L.tileLayer('https:
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
@@ -129,6 +143,12 @@ async function initStepMap(id) {
     }, 50);
 }
 
+/**
+ * 3. FONCTION DE DESSIN (CŒUR DU SYSTÈME)
+ */
+/**
+ * 3. FONCTION DE DESSIN (MISE À JOUR AVEC ROUTAGE SPÉCIFIQUE)
+ */
 async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
     const latDep = parseFloat(data.depart.lat);
     const lonDep = parseFloat(data.depart.lon);
@@ -152,12 +172,13 @@ async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
     }
     createNumberedMarker(map, latArr, lonArr, stepCounter, color, `<b>Arrivée:</b> ${data.arrivee.nom}`, useOffset ? 'right' : null, clusterGroup);
 
+    // --- LOGIQUE DE ROUTAGE ADAPTÉE ---
     const servers = {
-        'voiture': 'https:
-        'velo': 'https:
-        'vélo': 'https:
-        'marche': 'https:
-        'à pied': 'https:
+        'voiture': 'https://routing.openstreetmap.de/routed-car',
+        'velo': 'https://routing.openstreetmap.de/routed-bike',
+        'vélo': 'https://routing.openstreetmap.de/routed-bike',
+        'marche': 'https://routing.openstreetmap.de/routed-foot',
+        'à pied': 'https://routing.openstreetmap.de/routed-foot'
     };
     
     const baseUrl = servers[data.mode] || servers['voiture'];
@@ -169,6 +190,7 @@ async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
     }
     coordinates += `;${lonArr},${latArr}`;
 
+    // On utilise "driving" comme action sur ces serveurs car le profil est déjà dans l'URL du serveur
     const url = `${baseUrl}/route/v1/driving/${coordinates}?overview=full&geometries=geojson`;
 
     try {
@@ -181,7 +203,7 @@ async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
                     color: color, 
                     weight: 5, 
                     opacity: 0.8,
-                    
+                    // Style : pointillés pour vélo/marche pour bien les différencier
                     dashArray: (data.mode !== 'voiture') ? '10, 10' : null 
                 }
             }).addTo(map);
@@ -196,7 +218,7 @@ async function drawRoute(map, data, color, fitBounds, useOffset, clusterGroup) {
 }
 
 function createNumberedMarker(map, lat, lon, number, color, popupText, offsetDirection, clusterGroup) {
-    
+    // Sécurité ultime
     if (isNaN(lat) || isNaN(lon)) return;
 
     let offsetClass = '';
@@ -220,6 +242,10 @@ function createNumberedMarker(map, lat, lon, number, color, popupText, offsetDir
     }
 }
 
+/* ============================================================
+   UI & INTERACTION
+   ============================================================ */
+
 window.toggleTrajet = function(id) {
     const container = document.getElementById('sous-etapes-' + id);
     const card = document.getElementById('card-' + id);
@@ -230,17 +256,18 @@ window.toggleTrajet = function(id) {
     const isActive = container.classList.contains('active');
 
     if (isActive) {
-        
+        // Fermeture
         container.classList.remove('active');
         card.classList.remove('active');
         checkAndToggleGlobalMap();
     } else {
-        
+        // Ouverture
         container.classList.add('active');
         card.classList.add('active');
         
         if (mapGlobal) mapGlobal.style.display = 'none';
 
+        // IMPORTANT : On attend que l'animation CSS (slide down) commence
         setTimeout(() => { 
             initStepMap(id); 
         }, 300);
@@ -254,21 +281,25 @@ function checkAndToggleGlobalMap() {
     
     if (activeCards.length === 0) {
         mapGlobal.style.display = 'block';
-        
+        // Petit fix si la carte globale a besoin de se redessiner
         const map = L.DomUtil.get('map-global');
         if(map && map._leaflet_id) {
-             
+             // Optionnel : map.invalidateSize() si le conteneur a changé
         }
     } else {
         mapGlobal.style.display = 'none';
     }
 }
 
+
+/* ============================================================
+   CALCULS TEXTUELS ET HORAIRES
+   ============================================================ */
 function calculerTousLesSegments() {
-    
+    // Pour chaque trajet (card-vu)
     const cards = document.querySelectorAll('.card-vu');
     cards.forEach((card, cardIndex) => {
-        
+        // Petit délai pour ne pas spammer l'API
         setTimeout(() => { calculerHorairesTrajet(card); }, cardIndex * 500);
     });
 }
@@ -278,12 +309,13 @@ async function calculerHorairesTrajet(card) {
     const dataTrajet = getTrajetData(trajetId);
     
     if (!dataTrajet || !dataTrajet.hasCoords) {
-        
+        // console.warn(`Trajet ${trajetId} : coordonnées manquantes`);
         return;
     }
 
     const etapeCards = card.querySelectorAll('.sous-etape-card');
     
+    // Construction des coordonnées
     let coordsPath = `${dataTrajet.depart.lon},${dataTrajet.depart.lat}`;
     if (dataTrajet.sousEtapes && dataTrajet.sousEtapes.length > 0) {
         dataTrajet.sousEtapes.forEach(se => {
@@ -292,18 +324,23 @@ async function calculerHorairesTrajet(card) {
     }
     coordsPath += `;${dataTrajet.arrivee.lon},${dataTrajet.arrivee.lat}`;
 
+    // --- CORRECTION ICI : Utilisation des bons serveurs ---
     const servers = {
-        'voiture': 'https:
-        'velo': 'https:
-        'vélo': 'https:
-        'marche': 'https:
-        'à pied': 'https:
+        'voiture': 'https://routing.openstreetmap.de/routed-car',
+        'velo': 'https://routing.openstreetmap.de/routed-bike',
+        'vélo': 'https://routing.openstreetmap.de/routed-bike',
+        'marche': 'https://routing.openstreetmap.de/routed-foot',
+        'à pied': 'https://routing.openstreetmap.de/routed-foot'
     };
 
+    // On récupère le bon serveur, sinon voiture par défaut
     const baseUrl = servers[dataTrajet.mode] || servers['voiture'];
 
+    // Note : Sur ces serveurs spécifiques (FOSSGIS), on laisse souvent "/driving/" dans l'URL
+    // car c'est le sous-domaine (routed-foot) qui détermine la vitesse.
     const url = `${baseUrl}/route/v1/driving/${coordsPath}?overview=false&steps=false`;
-    
+    // -------------------------------------------------------
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -323,6 +360,7 @@ async function calculerHorairesTrajet(card) {
                 if (targetCard) {
                     const horaireSpan = targetCard.querySelector('.horaire-calcule');
                     const isArrival = targetCard.dataset.isArrival === '1';
+                    // Correction potentielle si 'isDeparture' n'est pas défini dans ton HTML, on vérifie juste arrival
                     
                     if (horaireSpan) {
                         if (isArrival) {
@@ -352,7 +390,7 @@ async function calculerHorairesTrajet(card) {
                     timeText += minutes + 'min';
                     
                     segmentInfo.querySelector('.segment-time').textContent = timeText;
-                    
+                    // Ajout d'une classe pour indiquer que le calcul est fait (optionnel)
                     segmentInfo.classList.add('segment-calculated');
                 }
             });
@@ -361,6 +399,8 @@ async function calculerHorairesTrajet(card) {
         console.error("Erreur calcul horaires:", error);
     }
 }
+
+
 
 function addTime(startTime, secondsToAdd) {
     if(!startTime) return "--:--";
@@ -372,6 +412,7 @@ function addTime(startTime, secondsToAdd) {
            date.getMinutes().toString().padStart(2, '0');
 }
 
+// Fonction utilitaire pour convertir "HH:mm:ss" ou "HH:mm" en secondes
 function durationToSeconds(timeStr) {
     if(!timeStr) return 0;
     const parts = timeStr.split(':').map(Number);

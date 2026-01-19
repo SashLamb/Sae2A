@@ -2,14 +2,15 @@
 require_once __DIR__ . '/include/init.php';
 $userId = $_SESSION['utilisateur']['id'] ?? null;
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Road Trip Planner</title>
-    <link rel="stylesheet" href="https:
-    <script src="https:
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <?php
     if ($userId !== null) {
         echo "<script>const currentUserId = " . json_encode($userId) . ";</script>";
@@ -113,14 +114,18 @@ include_once __DIR__ . "/modules/header.php"
     </div>
 </main>
 
+      
+     
 <?php     
 include_once __DIR__ . "/modules/footer.php"
 ?>
 <input type="hidden" id="userCity" value="<?php echo isset($_SESSION['utilisateur']['ville']) ? $_SESSION['utilisateur']['ville'] : ''; ?>">
-<script src="https:
-<script src="https:
-<script src="https:
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://unpkg.com/leaflet-markercluster/dist/leaflet.markercluster.js"></script>
 <script src="js/index.js"></script>
+
+
 
 </body>
 </html>

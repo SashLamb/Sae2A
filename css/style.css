@@ -17,6 +17,10 @@
   --beige_visu: #F2E9D6;
 }
 
+/* ==============================
+  React Access
+============================== */
+
 html.dark {
   background-color: #132440;
   --orange: #2E8B57; 
@@ -30,10 +34,15 @@ html.dark {
   color: black;
 }
 
+
 html.malvoyant {
   font-size: 20px;
 }
 
+
+
+
+/* Mode daltonien générique */
 html.daltonien {
   --bleu_clair: #4FB3BF;
   --bleu_fonce: #1F4E79;
@@ -99,6 +108,11 @@ html.MalvoyantBtn {
   --orange_malvoyant: #2E8B57; 
 }
 
+
+
+/* ==============================
+  STYLE GLOBAL
+============================== */
 *, ::before, ::after{
   text-decoration: none ;
   box-sizing: border-box;
@@ -127,6 +141,7 @@ body {
     margin: 0;         
 }
 
+
 h1{
   color: var(--orange);
   text-align: center;
@@ -136,6 +151,9 @@ button, input, select, textarea, label{
     font-size: 20px;
   }
 
+/*===================================
+          Photo-Profil 
+=====================================*/
 .profil-box {
   position: relative;
   align-items: center;
@@ -154,6 +172,7 @@ button, input, select, textarea, label{
   bottom: 80px ;
 }
 
+
 .profil-nom {
   position: relative;
   font-weight: bold;
@@ -167,6 +186,10 @@ button, input, select, textarea, label{
   right : 32px ;
 }
 
+
+/* ==============================
+  STYLE DANS DES INPUTS DANS LA SIDE-BAR
+============================== */
 .main-container {
   display: flex;
   gap: 20px;
@@ -179,6 +202,7 @@ button, input, select, textarea, label{
   padding : 15px;
   margin-bottom: 15px; 
 }
+
 
 .sidebar {
   width: 460px;
@@ -255,6 +279,11 @@ button, input, select, textarea, label{
   width: 100%;
 }
 
+/* ==============================
+   STYLE DU FORMULAIRE "AJOUTER UN TRAJET"
+============================== */
+
+/* Conteneur de chaque champ */
 .new-block-field {
     margin-bottom: 15px;
 }
@@ -336,6 +365,9 @@ button, input, select, textarea, label{
     transform: translateY(-2px);
 }
 
+/* ==============================
+  STYLE POUR LES SUGGESTIONS DES VILLES
+============================== */
 .ui-autocomplete {
   max-height: 250px;
   overflow-y: auto;
@@ -376,11 +408,16 @@ button, input, select, textarea, label{
   box-sizing: border-box;
 }
 
+
 .subEtape input[type="text"].subEtapeNom {
   border-radius: 15px;
   padding: 8px 12px;
 }
 
+
+/* ==============================
+  SOUS-ETAPES
+============================== */
 .segment-form-container, .subEtape {
   background: #f2e9d6;
   padding: 15px;
@@ -398,6 +435,10 @@ padding: 6px 10px;
   padding : 10px;
   border-radius: 15px;
 }
+
+/* ==============================
+  ANIMATION FORMULAIRE SOUS-ETAPES
+============================== */
 
 .segment-form-container {
   transition: opacity 0.3s ease; 
@@ -433,6 +474,10 @@ padding: 6px 10px;
   border-top: 1px solid rgba(0,0,0,0.1);
   margin-top: 15px;
 }
+
+/* ==============================
+  STYLE AFFICHAGE ROAD TRIP D'UN USER
+============================== */
 
 .roadtrip-grid {
   display: grid;
@@ -476,6 +521,7 @@ padding: 6px 10px;
   background: var(--vert);
 }
 
+/* --- AJOUT POUR LES BADGES DE STATUT --- */
 .badge-statut {
     display: inline-block;
     padding: 5px 10px;
@@ -487,17 +533,20 @@ padding: 6px 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Couleur pour le mode Brouillon (Jaune/Orange ou Gris) */
 .statut-brouillon {
     background-color: #fff3cd;
     color: #856404;
     border: 1px solid #ffeeba;
 }
 
+/* Couleur pour le mode Terminé (Vert) */
 .statut-termine {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+/* --------------------------------------- */
 
 .roadtrip-buttons {
   display: flex;
@@ -506,6 +555,7 @@ padding: 6px 10px;
   margin-top: 10px;
 }
 
+/* Boutons */
 .roadtrip-buttons a {
   flex: 1;
   text-align: center;
@@ -519,6 +569,7 @@ padding: 6px 10px;
   gap: 6px;
 }
 
+/* Voir */
 .btn-view {
   background: #3498db;
   color: white;
@@ -527,6 +578,7 @@ padding: 6px 10px;
   background: #217dbb;
 }
 
+/* Modifier */
 .btn-edit {
   background: #f1c40f;
   color: black;
@@ -538,6 +590,7 @@ padding: 6px 10px;
   background: #d4ac0d;
 }
 
+/* Supprimer */
 .btn-delete {
   background-color: #e74c3c;
   color: white;
@@ -550,9 +603,9 @@ padding: 6px 10px;
 }
 
 .roadtrip-photo {
-  width: 100%;        
-  height: auto;      
-  object-fit: contain;  
+  width: 100%;        /* prend toute la largeur de la carte */
+  height: auto;      /* hauteur fixe identique pour toutes */
+  object-fit: contain;  /* crop automatique pour remplir le cadre */
   border-radius: 8px;
   margin-bottom: 10px;
 }
@@ -692,7 +745,7 @@ padding: 6px 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin-bottom: 20px;
-  overflow: visible; 
+  overflow: visible; /* Changé de hidden à visible pour permettre le sticky */
   transition: box-shadow 0.3s;
 }
 
@@ -709,7 +762,7 @@ padding: 6px 10px;
   cursor: pointer;
   user-select: none;
   transition: background 0.3s;
-  border-radius: 8px 8px 0 0; 
+  border-radius: 8px 8px 0 0; /* Arrondi en haut seulement */
 }
 
 .trajet-header:hover {
@@ -845,6 +898,10 @@ padding: 6px 10px;
   font-style: italic;
 }
 
+
+/* ==============================
+  CARTE LEAFLET
+============================== */
 .map-container, #map{
   flex: 1;
   width: 100%;
@@ -858,6 +915,9 @@ padding: 6px 10px;
   top: 20px;       
 }
 
+/* ==============================
+  IMAGES / POPUPS / LIGHTBOX
+============================== */
 .popup-photo, .sousetape-photo {
   width: 180px;
   height: auto;
@@ -899,6 +959,10 @@ padding: 6px 10px;
   to { transform: scale(1); opacity: 1; }
 }
 
+
+/* ==============================
+  AJOUT : STYLE POUR eLeMENTS DYNAMIQUES (legende, sous-etapes, formulaires)
+============================== */
 .sidebar #legend {
   margin-top: 20px;
   background: var(--beige_fonce);
@@ -998,6 +1062,7 @@ padding: 6px 10px;
   height: 60px;
 }
 
+
 #segmentFormContainer .subEtape-buttons {
   display: flex;
   justify-content: space-between;
@@ -1034,6 +1099,11 @@ padding: 6px 10px;
   background-color: var(--vert);
 }
 
+
+/*==========================================
+STYLE DE LA TIME LINE POUR AFFICHAGE DES ROAD TRIPS
+==========================================*/
+
 .timeline {
   position: relative;
   padding: 20px;
@@ -1048,6 +1118,7 @@ padding: 6px 10px;
   position: relative;
 }
 
+/* Fleche verticale */
 .timeline ul::before {
   content: '';
   position: absolute;
@@ -1060,6 +1131,7 @@ padding: 6px 10px;
   z-index: 0;
 }
 
+/* Pointe de la fleche en bas */
 .timeline ul::after {
   content: '';
   position: absolute;
@@ -1133,6 +1205,10 @@ strong {
   background: var(--beige);
 }
 
+
+/* ==============================
+STYLES DES ELEMENTS DE L'EDITEUR DE TEXTE POUR LES SOUS-ETAPES
+============================== */
 .sous-etape-card p {
   margin-top: 5px;
   margin-bottom: 15px; 
@@ -1185,6 +1261,11 @@ strong {
   text-decoration: underline;
 }
 
+/* ==============================
+  REFATO JS ELEMENTS (Nouveaux Styles)
+============================== */
+
+/* Styles pour la ligne d'ajout d'etape (JS: addEtape) */
 .etape-row {
   display: flex;
   align-items: center;
@@ -1256,6 +1337,7 @@ strong {
   padding: 5px;
 }
 
+/* Style image miniature legende */
 .legend-thumb {
   max-width: 50px;
   max-height: 50px;
@@ -1268,6 +1350,10 @@ strong {
 .legend-sub-text {
   flex-grow: 1;
 }
+
+/* ==============================
+   STYLES BOUTONS TRANSPORT & OPTIONS
+============================== */
 
 .transport-options {
     display: inline-flex;
@@ -1364,6 +1450,11 @@ strong {
     height: 16px;
 }
 
+
+/* ==============================
+   STYLE CONTENU TINYMCE (Legende & Affichage)
+============================== */
+
 .tinymce-content {
     font-size: 0.95rem;
     color: var(--bleu_fonce_ecriture);
@@ -1406,6 +1497,11 @@ strong {
     list-style-type: circle !important;
 }
 
+
+/* ==============================
+  STYLE VU ROADTRIP (Modifications)
+============================== */
+
 #map-global {
     width: 100%;
     height: 450px;
@@ -1425,7 +1521,7 @@ strong {
 }
 
 .sous-etapes-container {
-    display: none; 
+    display: none; /* Cache */
     padding: 20px;
     background-color: var(--beige_visu);
     border-top: 1px solid #ddd;
@@ -1458,27 +1554,31 @@ strong {
     transform: rotate(180deg);
 }
 
+/* ==============================
+  LAYOUT SIDE-BY-SIDE (Texte Gauche / Carte Droite)
+============================== */
+
 .sous-etapes-container {
     display: none; 
     padding: 20px;
     background-color: var(--beige_visu);
     border-top: 1px solid #ddd;
-    border-radius: 0 0 8px 8px; 
+    border-radius: 0 0 8px 8px; /* Arrondi en bas seulement */
 }
 
 .sous-etapes-container.active {
     display: flex !important;
     gap: 20px;
     align-items: flex-start;
-    position: relative; 
-    overflow: visible; 
+    position: relative; /* Important pour que sticky fonctionne à l'intérieur */
+    overflow: visible; /* Permet au sticky de fonctionner */
 }
 
 .trajet-details-column {
     flex: 1;
     min-width: 0; 
     max-width: 50%;
-    overflow: visible; 
+    overflow: visible; /* Permet au contenu de déborder si nécessaire */
 }
 
 .map-container-vu {
@@ -1486,8 +1586,8 @@ strong {
   min-width: 0;
   position: sticky;
   top: 20px;
-  align-self: flex-start; 
-  max-height: calc(100vh - 40px); 
+  align-self: flex-start; /* Important pour que sticky fonctionne correctement */
+  max-height: calc(100vh - 40px); /* Hauteur maximale basée sur la hauteur de la fenêtre */
 }
 
 .map-trajet {
@@ -1512,6 +1612,7 @@ strong {
     font-size: 1.1rem;
 }
 
+/* Amelioration du conteneur de photos */
 .photos-section {
     margin-top: 20px;
 }
@@ -1545,6 +1646,7 @@ strong {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+/* Style pour la description des sous-etapes */
 .sous-etape-description {
     margin-top: 15px;
     padding: 15px;
@@ -1565,6 +1667,7 @@ strong {
     line-height: 1.6;
 }
 
+/* Style pour quand il n'y a pas de description */
 .sous-etape-description-empty {
     margin-top: 10px;
     padding: 10px;
@@ -1572,6 +1675,7 @@ strong {
     border-radius: 5px;
 }
 
+/* Style info de la sous-etape (heure, etc.) */
 .sous-etape-info {
     display: flex;
     gap: 15px;
@@ -1586,6 +1690,10 @@ strong {
     align-items: center;
     gap: 5px;
 }
+
+/* ==============================
+   STYLES POUR LES SEGMENTS DE TRANSPORT
+============================== */
 
 .segment-transport {
     display: flex;
@@ -1691,6 +1799,7 @@ strong {
     z-index: 100 !important;
 }
 
+/* AJOUTS POUR LA LÉGENDE AVEC DATE */
 .legend-date-container {
     display: flex;
     align-items: center;
@@ -1735,17 +1844,20 @@ strong {
 
 .status-selector-container select {
   width: 100%;
-  padding: 10px 14px; 
-  border-radius: 15px; 
+  padding: 10px 14px; /* Ajusté pour correspondre aux inputs */
+  border-radius: 15px; /* Ajusté à 15px */
   border: 1px solid var(--orange);
   font-weight: bold;
   background-color: white;
 }
 
+/* ==============================
+  STYLE AUTOCOMPLETE PHOTO/CSS
+============================== */
 .ui-autocomplete {
     background: var(--white) !important;
     border: 2px solid var(--bleu_clair) !important;
-    border-radius: 15px !important; 
+    border-radius: 15px !important; /* Harmonisé avec sidebar */
     box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
     z-index: 9999 !important;
     max-width: 400px;
@@ -1780,6 +1892,10 @@ strong {
     color: var(--orange) !important;
 }
 
+/* ==============================
+   RESPONSIVE (TABLETTE & MOBILE)
+   Passage en colonne : Formulaire en haut, Carte en bas
+============================== */
 @media (max-width: 1024px) {
 
   .main-container {
@@ -1814,6 +1930,9 @@ strong {
     font-size: 2.5rem; 
   }
 }
+/* ==============================
+   STYLES POUR LES HORAIRES
+============================== */
 
 .horaire-info {
     margin-top: 8px;
@@ -1851,11 +1970,13 @@ strong {
     color: var(--vert);
 }
 
+/* Style spécifique pour les horaires d'arrivée finale */
 .arrivee-card .horaire-calcule strong {
     color: var(--rouge);
     font-size: 1.2rem;
 }
 
+/* Style pour le temps sur place */
 .pause-duree {
     display: inline-flex;
     align-items: center;
@@ -1871,6 +1992,7 @@ strong {
     color: var(--vert);
 }
 
+/* Animation pour le chargement */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }

@@ -2,58 +2,16 @@
 require_once __DIR__ . '/include/init.php';
 include_once __DIR__ . '/bd/lec_bd.php';
 include_once __DIR__ . '/fonctions/InfoItineraire.php';
+include_once __DIR__ . '/fonctions/getCoordonneesDepuisFavoris.php';
+include_once __DIR__ . '/fonctions/geocoderVilleEnDirect.php';
 
-function getCoordonneesDepuisFavoris($nomLieu, $id_utilisateur, $pdo) {
-    $stmt = $pdo->prepare("SELECT latitude, longitude FROM lieux_favoris WHERE nom_lieu = :nom AND id_utilisateur = :uid LIMIT 1");
-    $stmt->execute(['nom' => $nomLieu, 'uid' => $id_utilisateur]);
-    $favori = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($favori) {
-        return [
-            'lat' => $favori['latitude'],
-            'lon' => $favori['longitude']
-        ];
-    }
-    return null;
-}
-
-function geocoderVilleEnDirect($nomVille, $pdo) {
-    if (empty($nomVille)) return null;
-
-    $query = urlencode($nomVille);
-    $url = "https:
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_USERAGENT, "SaeRoadTripApp_PublicView");
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-    $json = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($httpCode === 200 && $json) {
-        $data = json_decode($json, true);
-        if (!empty($data) && isset($data[0])) {
-            $lat = $data[0]['lat'];
-            $lon = $data[0]['lon'];
-            try {
-                $stmt = $pdo->prepare("INSERT IGNORE INTO lieux_geocodes (nom, lat, lon, date_last_use) VALUES (?, ?, ?, NOW())");
-                $stmt->execute([trim($nomVille), $lat, $lon]);
-            } catch (Exception $e) {}
-            return ['lat' => $lat, 'lon' => $lon];
-        }
-    }
-    return null;
-}
+/** @var PDO $pdo */
 
 $id_roadtrip = $_GET['id'] ?? null;
 if (!$id_roadtrip) { header("Location: index.php"); exit; }
 
+// 1. Récupération Roadtrip avec vérification "Public"
+// On récupère aussi le pseudo de l'auteur
 $sql = "SELECT r.*, u.pseudo, u.photo_profil 
         FROM roadtrip r 
         JOIN utilisateurs u ON r.id_utilisateur = u.id 
@@ -64,11 +22,13 @@ $roadTrip = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$roadTrip) { die("Road trip introuvable."); }
 
+// Sécurité : Si ce n'est pas public et que je ne suis pas l'auteur -> Dehors
 $isMyRoadTrip = (isset($_SESSION['utilisateur']['id']) && $_SESSION['utilisateur']['id'] == $roadTrip['id_utilisateur']);
 if ($roadTrip['visibilite'] !== 'public' && !$isMyRoadTrip) {
     die("Ce road trip est privé.");
 }
 
+// 2. Récupération Trajets
 $stmt = $pdo->prepare("SELECT * FROM trajet WHERE road_trip_id = ? ORDER BY numero");
 $stmt->execute([$id_roadtrip]);
 $trajets = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -76,12 +36,14 @@ $trajets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $etapes = [];
 $jsMapData = [];
 
+// 3. Boucle de préparation des données (IDENTIQUE A VUROADTRIP)
 foreach ($trajets as $trajet) {
-    
+    // Récup sous-étapes
     $stmt = $pdo->prepare("SELECT * FROM sous_etape WHERE trajet_id = ? ORDER BY numero");
     $stmt->execute([$trajet['id']]);
     $sousEtapes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    // Récup photos pour chaque sous-étape
     foreach ($sousEtapes as &$se) {
         $stmtPhoto = $pdo->prepare("SELECT * FROM sous_etape_photos WHERE sous_etape_id = ?");
         $stmtPhoto->execute([$se['id']]);
@@ -91,12 +53,17 @@ foreach ($trajets as $trajet) {
     
     $etapes[$trajet['id']] = $sousEtapes;
 
+    // Géocodage Départ / Arrivée
+    // Note: En mode public, on n'utilise pas les favoris du visiteur pour géocoder les points de l'auteur.
+    // On tape directement dans le Cache ou l'API.
+    
     $coordsDep = getCoordonneesDepuisCache($trajet['depart'], $pdo);
     if (!$coordsDep) $coordsDep = geocoderVilleEnDirect($trajet['depart'], $pdo);
 
     $coordsArr = getCoordonneesDepuisCache($trajet['arrivee'], $pdo);
     if (!$coordsArr) $coordsArr = geocoderVilleEnDirect($trajet['arrivee'], $pdo);
 
+    // Géocodage Sous-étapes
     $sousEtapesCoords = [];
     foreach ($sousEtapes as $se) {
         if (!empty($se['ville'])) {
@@ -149,9 +116,9 @@ function getTransportIcon($type) {
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($roadTrip['titre']); ?> - Trips & Roads</title>
-    <link rel="stylesheet" href="https:
-    <link rel="stylesheet" href="https:
-    <link rel="stylesheet" href="https:
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="css/style.css">
     
     <style>
@@ -159,7 +126,7 @@ function getTransportIcon($type) {
         .photos-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
         .popup-photo { width: 100px; height: 100px; object-fit: cover; border-radius: 5px; cursor: pointer; transition: transform 0.2s; }
         .popup-photo:hover { transform: scale(1.1); }
-        .author-info { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-style: italic; color: 
+        .author-info { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-style: italic; color: #666; }
         .author-pp { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
     </style>
 </head>
@@ -207,7 +174,7 @@ function getTransportIcon($type) {
                 <div class="trajet-details-column">
                     <?php 
                     $listeEtapes = $etapes[$t['id']] ?? [];
-                    
+                    // Construction Timeline
                     $timeline = [];
                     $timeline[] = ['ville' => $t['depart'], 'is_departure' => true, 'heure_depart' => $t['heure_depart'] ?? null];
                     foreach ($listeEtapes as $etape) { $timeline[] = $etape; }
@@ -275,7 +242,7 @@ function getTransportIcon($type) {
                         </div>
                         
                         <?php 
-                        
+                        // Segment de transport
                         if ($i < count($timeline) - 1) :
                             $nextStep = $timeline[$i + 1];
                             $nextVilleNom = $nextStep['ville'] ?? $nextStep['nom'] ?? 'Étape';
@@ -306,7 +273,9 @@ function getTransportIcon($type) {
                     <?php endfor; ?>
                 </div> 
                 
-                <div id="map-trajet-<?php echo $t['id']; ?>" class="map-trajet"></div>
+                <div class = "map-container-vu"> 
+                    <div id="map-trajet-<?php echo $t['id']; ?>" class="map-trajet"></div>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>    
@@ -314,11 +283,11 @@ function getTransportIcon($type) {
 
 <?php include_once __DIR__ . "/modules/footer.php"; ?>
 
-<script src="https:
-<script src="https:
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 <script>
-    
+    // Passage des données PHP vers JS
     const roadTripData = <?php echo json_encode($jsMapData); ?>;
 </script>
 <script src="js/roadtrip.js"></script> 

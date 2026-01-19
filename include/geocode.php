@@ -3,7 +3,7 @@ require_once __DIR__ . '/../bd/lec_bd.php';
 header('Content-Type: application/json');
 
 try {
-    $input = json_decode(file_get_contents('php:
+    $input = json_decode(file_get_contents('php://input'), true);
     if (!$input || empty($input['nom'])) {
         echo json_encode(['success' => false, 'message' => 'Nom de ville manquant']);
         exit;
@@ -13,12 +13,13 @@ try {
     $lat = $input['lat'] ?? null;
     $lon = $input['lon'] ?? null;
 
+    // Vérifier si la ville existe déjà dans lieux_geocodes
     $stmt = $pdo->prepare("SELECT nom, lat, lon FROM lieux_geocodes WHERE nom = ?");
     $stmt->execute([$nom]);
     $ville = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($ville) {
-        
+        // La ville existe déjà, on retourne ses coordonnées
         echo json_encode([
             'success' => true,
             'cached' => true,
@@ -31,9 +32,10 @@ try {
         exit;
     }
 
+    // Si la ville n'existe pas, on doit obtenir ses coordonnées
     if (!$lat || !$lon) {
-        
-        $url = "https:
+        // Appeler Nominatim pour obtenir les coordonnées
+        $url = "https://nominatim.openstreetmap.org/search?format=json&q=" 
                . urlencode($nom) . "&limit=1&accept-language=fr";
         
         $context = stream_context_create([
@@ -59,6 +61,7 @@ try {
         $lon = $data[0]['lon'];
     }
 
+    // Insérer la nouvelle ville dans la base
     $stmt = $pdo->prepare("
         INSERT INTO lieux_geocodes (nom, lat, lon, date_last_use)
         VALUES (?, ?, ?, NOW())

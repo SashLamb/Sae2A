@@ -1,4 +1,6 @@
-
+/* ==============================
+        Indexx 
+============================== */
 .main-index main {
     padding: 2rem;
     background-color: var(--beige);
@@ -60,6 +62,10 @@
     width: 100%;
     border-radius: 8px;
 }
+
+/* ==============================
+  CONTENU PRINCIPAL
+============================== */
 
 .index_container {
   padding: 30px;
@@ -319,6 +325,10 @@
     }
 }
 
+/*=========================
+Responsive
+=========================*/
+
 @media (max-width: 1200px) {
     .map-wrapper {
         flex-direction: column;
@@ -379,6 +389,10 @@
     }
 }
 
+
+
+
+
 .leaflet-popup-content-wrapper {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -393,3 +407,4 @@
     color: var(--bleu_fonce_ecriture);
     margin-bottom: 5px;
 }
+

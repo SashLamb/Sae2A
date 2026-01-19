@@ -1,6 +1,16 @@
 <?php
 require_once __DIR__ . '/formulaire/form_amis.php';
+include_once __DIR__ . '/bd/lec_bd.php';
+/** @var PDO $pdo
+ * @var int    $utilisateur_id
+ * @var string $recherche
+ * @var array  $utilisateurs
+ * @var array  $amis
+ * @var array  $demandes
+ */
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,7 +18,7 @@ require_once __DIR__ . '/formulaire/form_amis.php';
     <meta charset="UTF-8">
     <title>Mes amis - Trips & Roads</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https:
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">    
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/index.css">
    

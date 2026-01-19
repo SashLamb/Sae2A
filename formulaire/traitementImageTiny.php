@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 if (isset($_FILES['file'])) {
     $file = $_FILES['file'];
     
+    // Vérification extension
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $extensionsAutorisees = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
@@ -17,6 +18,7 @@ if (isset($_FILES['file'])) {
 
     $nouveauNom = "rt_img_" . uniqid() . "_" . bin2hex(random_bytes(4)) . "." . $extension;
     
+    // Chemin PHYSIQUE (pour enregistrer le fichier sur le disque)
     $dossierCible = __DIR__ . '/../uploads/sousetapes/';
     if (!is_dir($dossierCible)) {
         mkdir($dossierCible, 0755, true);
@@ -25,15 +27,20 @@ if (isset($_FILES['file'])) {
 
     if (move_uploaded_file($file['tmp_name'], $cheminFinal)) {
         
+        // --- CALCUL DU CHEMIN WEB (URL) CORRIGÉ ---
         $scriptPath = $_SERVER['SCRIPT_NAME'];
         $webRoot = dirname(dirname($scriptPath));
         
+        // CORRECTION : Si le site est à la racine, dirname renvoie "/" ou "\".
+        // On le vide pour éviter le double slash "//uploads"
         if ($webRoot === '/' || $webRoot === '\\') {
             $webRoot = '';
         }
         
+        // On construit l'URL
         $location = $webRoot . '/uploads/sousetapes/' . $nouveauNom;
         
+        // Nettoyage des backslashes éventuels sur Windows
         $location = str_replace('\\', '/', $location);
 
         echo json_encode(['location' => $location]);

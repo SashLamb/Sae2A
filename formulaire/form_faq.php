@@ -1,5 +1,4 @@
 <?php
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -56,6 +55,7 @@ try {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
+  
     $mail->setFrom('tripsandroad@gmail.com', 'Trips & Roads - FAQ');
     $mail->addAddress('tripsandroad@gmail.com');
     $mail->addReplyTo($email, $nom);

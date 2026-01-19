@@ -312,11 +312,16 @@ button, input, select, textarea, label, p{
     font-size: 18px;
 }
 
+/*=======================
+Icône amis 
+========================*/
 #chat_icon{
   font-size : 90px ;
 }
 }
-
+/*=========================
+Responsive
+=========================*/
 @media (max-width: 768px) {
     .messagerie-container {
         flex-direction: column;
@@ -333,6 +338,9 @@ button, input, select, textarea, label, p{
     }
 }
 
+
+
+/* A REVOIR CA NE MARCHE PAS ENCORE */  
 @media (max-width: 425px) {
   .conv-name {
     font-weight: bold;

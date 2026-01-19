@@ -12,6 +12,7 @@ require_once __DIR__ . '/../include/init.php';
     <link rel="stylesheet" href="../css/form.css">
     <link rel="stylesheet" href="../css/page_link.css">
    
+
 </head>
 <body>
    
@@ -143,9 +144,13 @@ include_once __DIR__ . "/../modules/header.php";
             </form>
         </section>
 
+
+        
     </div>
 
+            
 </main>
+
 
 <script src = "/../js/recherche.js" ></script>
 <?php     

@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/include/init.php';
-include_once __DIR__ . '/bd/lec_bd.php'; 
+include_once __DIR__ . '/bd/lec_bd.php';
+
+/** @var PDO $pdo */
 
 if (!isset($_SESSION['utilisateur']['id'])) {
     header('Location: /connexion.php');
@@ -49,6 +51,7 @@ if (isset($_GET['id'])) {
           }
           
           $trajetComplet['heure_depart'] = isset($t['heure_depart']) ? $t['heure_depart'] : "08:00";
+          $trajetComplet['mode'] = isset($t['mode_transport']) ? $t['mode_transport'] : "Voiture";
           $trajetComplet['sousEtapes'] = array_map(function($se) {
               return [
                   'nom' => $se['ville'],
@@ -68,14 +71,14 @@ if (isset($_GET['id'])) {
   <head>
     <meta charset="utf-8">
     <title><?php echo $modeEdition ? "Modifier le RoadTrip" : "Création de RoadTrip"; ?></title>
-    <link rel="stylesheet" href="https:
-    <script src="https:
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="/css/style.css">
     
-    <script src="https:
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/tinymce/tinymce.min.js"></script>
-    <link rel="stylesheet" href="https:
-    <script src="https:
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
 
     <script>
         const USER_DEFAULT_CITY = "<?php echo htmlspecialchars($defaultCity); ?>";
@@ -129,7 +132,7 @@ if (isset($_GET['id'])) {
             <option value="amis" <?php echo ($modeEdition && $roadTripData['visibilite'] == 'amis') ? 'selected' : ''; ?>>👥 Amis</option>
             <option value="public" <?php echo ($modeEdition && $roadTripData['visibilite'] == 'public') ? 'selected' : ''; ?>>🌍 Public (Tout le monde)</option>
           </select>
-          <small style="display:block; margin-bottom:10px; color:
+          <small style="display:block; margin-bottom:10px; color:#666;">
             * Vous pouvez partager un brouillon en mode "Amis" ou "Public".
           </small>
 

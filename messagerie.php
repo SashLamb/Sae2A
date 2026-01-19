@@ -2,6 +2,8 @@
 require_once __DIR__ . '/include/init.php';
 include_once __DIR__ . '/bd/lec_bd.php';
 
+/** @var PDO $pdo */
+
 if (!isset($_SESSION['utilisateur']['id'])) {
     header('Location: /id.php');
     exit;
@@ -89,7 +91,7 @@ if ($conversation_id) {
 <head>
     <meta charset="UTF-8">
     <title>Messagerie - Trips & Roads</title>
-    <link rel="stylesheet" href="https:
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/messagerie.css">
 </head>

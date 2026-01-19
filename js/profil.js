@@ -1,3 +1,8 @@
+/*=======================================
+  Formulaire d'inscription et de connexion
+=======================================*/
+
+
 
 function showLogin() {
     document.getElementById('loginForm').style.display = 'block';
@@ -13,6 +18,7 @@ function showRegister() {
     document.getElementById('btnRegister').classList.add('active');
 }
 
+ 
 function openModal() {
     const modal = document.querySelector('.formulaire'); 
     if (modal) {
@@ -24,7 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
     openModal();
     showRegister();
 });
-    
+    /*==================================
+    Mes road 
+    ================================*/
+
 function closeShareModal() {
     document.getElementById('shareModal').classList.remove('active');
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -50,6 +59,10 @@ document.addEventListener('click', function(event) {
         closeShareModal();
     }
 });
+
+/*==================================
+    partage du lien MesRoadTrips
+================================*/
 
 function closeShareModal() {
     document.getElementById('shareModal').style.display = 'none';

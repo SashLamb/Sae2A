@@ -2,6 +2,8 @@
 require_once __DIR__ . '/include/init.php';
 include_once __DIR__ . '/bd/lec_bd.php';
 
+/** @var PDO $pdo */
+
 if (!isset($_SESSION['utilisateur']['id'])) {
     header('Location: /id.php');
     exit;
@@ -38,7 +40,7 @@ try {
     
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
-    $shareUrl = $protocol . ':
+    $shareUrl = $protocol . '://' . $host . '/shared.php?t=' . $token;
     
     $_SESSION['share_url'] = $shareUrl;
     
