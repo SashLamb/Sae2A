@@ -76,7 +76,7 @@
                                 $photoProfil = "User.png"; 
                                 
                             }
-                            $serverPathUploads = __DIR__ . "/../uploads/pp/$photoProfil";                       
+                            $serverPathUploads = WEBROOT . "uploads/pp/" . $photoProfil;
                             if (!file_exists($serverPathUploads)) {
                                 $photoPath = __DIR__ . "/../img/$photoProfil"; 
                                 

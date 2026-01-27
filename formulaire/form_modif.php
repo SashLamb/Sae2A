@@ -1,11 +1,8 @@
 <?php
-require_once __DIR__ . '/../include/init.php';
-require_once __DIR__ . '/../bd/lec_bd.php';
-
 /** @var PDO $pdo */
 
 if (!isset($_SESSION['utilisateur'])) {
-    header("Location: ../id.php");
+    header("Location: /login");
     exit;
 }
 
@@ -35,13 +32,13 @@ $password_hash = null;
 
 if (!empty($new_password)) {
     if ($new_password !== $confirm_password) {
-        die("Les mots de passe ne correspondent pas. <a href='../profil.php'>Retour</a>");
+        die("Les mots de passe ne correspondent pas. <a href='/profil'>Retour</a>");
     }
     $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 }
 
 
-$upload_dir = __DIR__ . '/../uploads/pp/';
+$upload_dir = WEBROOT . "uploads/pp";
 if (!is_dir($upload_dir)) {
     mkdir($upload_dir, 0777, true);
 }
@@ -140,5 +137,5 @@ $_SESSION['utilisateur'] = [
     'photo_profil'   => $new_photo
 ];
 
-header("Location: ../profil.php?updated=1");
+header("Location: /profil?updated=1");
 exit;
