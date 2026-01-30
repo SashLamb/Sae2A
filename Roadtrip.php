@@ -51,7 +51,7 @@ if ($id_utilisateur) {
     </style>
 </head>
 <body>
-<?php include_once __DIR__ . "/modules/header.php"; ?>
+<?php include_once ROOT . "/modules/header.php"; ?>
 
 <h1>Road Trips Publics</h1>
 
@@ -72,6 +72,8 @@ if ($id_utilisateur) {
             <?php if (!empty($rt['photo'])): ?>
                 <img src="/uploads/roadtrips/<?= htmlspecialchars($rt['photo']) ?>" 
                      alt="Photo du road trip" class="roadtrip-photo">
+            <?php else : ?>
+                <img src="/img/imgBase.png" alt="Photo par défaut du road trip" class="roadtrip-photo">
             <?php endif; ?>
 
             <h3><?= htmlspecialchars($rt['titre']) ?></h3>
@@ -91,7 +93,7 @@ if ($id_utilisateur) {
             </p>
 
             <div class="roadtrip-buttons">
-                <a class="btn-view" href="public_road?id=<?= $rt['id'] ?>">
+                <a class="btn-view" href="/public_road?id=<?= $rt['id'] ?>">
                     <i class="material-icons">visibility</i>
                 </a>
                 
@@ -109,7 +111,7 @@ if ($id_utilisateur) {
 </div>
 <?php endif; ?>
 
-<?php include_once __DIR__ . "/modules/footer.php"; ?>
+<?php include_once ROOT . "/modules/footer.php"; ?>
 
 </body>
 </html>
