@@ -1,79 +1,58 @@
-# Road-Trip
+# CakePHP Application Skeleton
 
-# Trips & Roads
-Imagine une plateforme où chaque voyage devient une aventure partagée.
+![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=5.x)
+[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
-Trips & Roads est un site web collaboratif qui permet de créer, planifier et partager des road-trips à partir des cartes OpenStreetMap.
+A skeleton for creating applications with [CakePHP](https://cakephp.org) 5.x.
 
-Que vous soyez un étudiant curieux, une famille organisée ou un aventurier en van, notre outil vous aide à découvrir des points d’intérêt, à créer votre propre itinéraire et à échanger avec vos amis grâce à une messagerie intégrée.
+The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 
-L’objectif : simplifier la planification de voyage tout en apportant une dimension sociale et accessible avec des filtres personnalisés, un mode d’accessibilité pour tous, et une interface intuitive.
+## Installation
 
-En quelques clics, Trips & Roads transforme la préparation d’un voyage en une expérience conviviale, collaborative et inspirante.
+1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
+2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
 
----
+If Composer is installed globally, run
 
-## Description du projet  
+```bash
+composer create-project --prefer-dist cakephp/app
+```
 
-Trips & Roads est un site web permettant aux utilisateurs de :  
-- Créer et personnaliser leurs **Road Trips** (titre, étapes, dates, points d'intérêt).  
-- **Partager** leurs parcours avec leurs amis ou les rendre **publics**.  
-- Échanger via une **messagerie intégrée**.  
-- Gérer un **profil utilisateur** (bio, photo, liste d’amis).  
-- Découvrir les parcours de la communauté grâce à un flux public.  
+In case you want to use a custom app dir name (e.g. `/myapp/`):
 
-L’application repose sur **OpenStreetMap** pour la cartographie et une architecture web moderne pour une expérience fluide et interactive.  
+```bash
+composer create-project --prefer-dist cakephp/app myapp
+```
 
----
+You can now either use your machine's webserver to view the default home page, or start
+up the built-in webserver with:
 
-## Fonctionnalités principales  
+```bash
+bin/cake server -p 8765
+```
 
- **Authentification & gestion des utilisateurs**  
-- Connexion, inscription et gestion des comptes.  
-- Amis et réseau social intégré (si possible).  
+Then visit `http://localhost:8765` to see the welcome page.
 
- **Gestion de Road Trips**  
-- Création et modification d’itinéraires.  
-- Ajout d’étapes, de photos et d’informations pratiques.  
-- Partage privé (amis) ou public.  
+## Demo app
 
- **Messagerie**  
-- Conversations entre amis.  
-- Notifications de nouveaux messages.  
+Check out the [5.x-demo branch](https://github.com/cakephp/app/tree/5.x-demo), which contains demo migrations and a seeder.
+See the [README](https://github.com/cakephp/app/blob/5.x-demo/README.md) on how to get it running.
 
- **Profil utilisateur**  
-- Personnalisation du profil.  
-- Liste d’amis et historique des Road Trips créés.  
+## Update
 
- **Exploration**  
-- Recherche de Road Trips.  
-- Accès aux parcours publics.  
+Since this skeleton is a starting point for your application and various files
+would have been modified as per your needs, there isn't a way to provide
+automated upgrades, so you have to do any updates manually.
 
----
+## Configuration
 
-## Diagrammes UML inclus dans le projet  
+Read and edit the environment specific `config/app_local.php` and set up the
+`'Datasources'` and any other configuration relevant for your application.
+Other environment agnostic settings can be changed in `config/app.php`.
 
-- **Diagrammes de séquence** (connexion, inscription, messagerie, création de Road Trip, profil).  
-- **Diagramme de classes** (structure globale du système).  
-- **Diagramme d’états** (définition et transitions des états du système).  
+## Layout
 
----
-
-## Technologies utilisées  
-
-- **Frontend** : HTML5, CSS3, PHP8.4
-- **Backend** : 
-- **Base de données** :   
-- **Cartographie** : OpenStreetMap  
-- **Gestion de projet** : UML, GitLab
-
----
-
-## Organisation du projet  
-
-
-
-
-# Lien vers trello 
-https://trello.com/invite/b/68d3c42f36e4bf6468592dfd/ATTI5695cf1b3d99654db01801ecca62bdc54E30B98E/tripsroads
-
+The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
+framework by default. You can, however, replace it with any other library or
+custom styles.
